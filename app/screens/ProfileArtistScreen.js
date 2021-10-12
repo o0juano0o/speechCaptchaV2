@@ -3,6 +3,7 @@ import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
+const image = require('../assets/graphy1.png');
 
 export default function profileScreen() {
   return (
@@ -12,15 +13,13 @@ export default function profileScreen() {
       </Text>
       <Image source={menu} style={styles.menu} />
       <View style={styles.container1}>
-        <TouchableOpacity>
-          <Text style={styles.desafios}>Desafíos</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text style={styles.perfil}>Mi perfil</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text style={styles.sesion}>Cerrar sesión</Text>
-        </TouchableOpacity>
+        <Text style={styles.title}>Tus datos</Text>
+        <Text style={styles.text}>UserName:</Text>
+        <Text style={styles.text}>Email:</Text>
+        <Text style={styles.text}>Podcasts subidos:</Text>
+      </View>
+      <View style={styles.container2}>
+        <Image source={image} style={styles.image}></Image>
       </View>
     </View>
   );
@@ -31,18 +30,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#27A2FC',
+    backgroundColor: 'white',
   },
   logo: {
     position: 'absolute',
     left: '5%',
     top: '1%',
-    color: 'white',
     fontSize: 20,
+    color: 'black',
   },
   vc: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: '#27A2FC',
   },
   menu: {
     position: 'absolute',
@@ -51,28 +51,34 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   container1: {
-    backgroundColor: '#27A2FC',
-    marginTop: '-25%',
-    height: '50%',
+    backgroundColor: 'white',
+    marginTop: '-105%',
+    height: '20%',
     width: '80%',
-    borderColor: 'gray',
-    borderWidth: 1,
   },
-  desafios: {
+  title: {
     fontSize: 25,
     textAlign: 'center',
-    marginBottom: '4%',
-    color: 'white',
+    marginBottom: '5%',
+    fontWeight: 'bold',
+    color: 'black',
   },
-  perfil: {
-    fontSize: 25,
-    textAlign: 'center',
-    color: 'white',
+  text: {
+    fontSize: 20,
+    marginBottom: '5%',
+    color: 'black',
   },
-  sesion: {
-    fontSize: 25,
-    textAlign: 'center',
-    marginTop: '70%',
-    color: 'white',
+  container2: {
+    marginBottom: '-105%',
+    height: '60%',
+    width: '80%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  image: {
+    position: 'relative',
+    left: '16%',
+    marginBottom: '-117%',
   },
 });

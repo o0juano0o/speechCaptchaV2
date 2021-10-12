@@ -13,8 +13,11 @@ import RegisterScreen from './screens/RegisterScreen';
 import ResultScreen from './screens/ResultScreen';
 import LoginScreen from './screens/LoginScreen';
 import Home from './screens/Home';
-import ProfileScreen from './screens/ProfileScreen';
+import BlueUserScreen from './screens/BlueUserScreen';
+import BlueArtistScreen from './screens/BlueArtistScreen';
 import PresentationScreen from './screens/PresentationScreen';
+import ProfileUserScreen from './screens/ProfileUserScreen';
+import ProfileArtistScreen from './screens/ProfileArtistScreen';
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -32,8 +35,11 @@ const App = () => {
         <Stack.Screen name="Result" component={ResultScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="BlueUser" component={BlueUserScreen} />
+        <Stack.Screen name="BlueArtist" component={BlueArtistScreen} />
         <Stack.Screen name="Presentation" component={PresentationScreen} />
+        <Stack.Screen name="ProfileUser" component={ProfileUserScreen} />
+        <Stack.Screen name="ProfileArtist" component={ProfileArtistScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
