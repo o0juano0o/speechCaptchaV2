@@ -10,6 +10,8 @@ import ValidationScreen from './screens/ValidationScreen';
 import CircleComponent from './screens/CircleComponent';
 import RegisterScreen from './screens/RegisterScreen';
 import Home from './screens/Logeo';
+import ProfileScreen from './screens/ProfileScreen';
+import PresentationScreen from './screens/PresentationScreen';
 
 const App = () => {
   const handleClick = () => {
@@ -35,7 +37,10 @@ const App = () => {
         <Stack.Screen name="Validation" component={ValidationScreen} />
         <Stack.Screen name="Circle" component={CircleComponent} />
         <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="Presentation" component={PresentationScreen} />
       </Stack.Navigator>
+      
     </NavigationContainer>
   );
 };

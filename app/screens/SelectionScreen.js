@@ -23,6 +23,12 @@ export default function SelectionScreen({navigation}) {
       <Button
         title="Go to Register"
         onPress={() => navigation.navigate('Register')}></Button>
+      <Button
+        title="Go to Profile"
+        onPress={() => navigation.navigate('Profile')}></Button>
+      <Button
+        title="Go to Presentation"
+        onPress={() => navigation.navigate('Presentation')}></Button>
     </View>
   );
 }
