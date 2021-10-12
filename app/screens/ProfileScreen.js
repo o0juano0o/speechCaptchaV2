@@ -54,25 +54,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#27A2FC',
     marginTop: '-25%',
     height: '50%',
-      width: '80%',
-      borderColor: 'gray',
-      borderWidth: 1,
+    width: '80%',
+    borderColor: 'gray',
+    borderWidth: 1,
   },
   desafios: {
     fontSize: 25,
-      textAlign: 'center',
-      marginBottom: '4%',
-    color:'white'
+    textAlign: 'center',
+    marginBottom: '4%',
+    color: 'white',
   },
-    perfil: {
-        fontSize: 25,
-        textAlign: 'center',
-        color:'white'
+  perfil: {
+    fontSize: 25,
+    textAlign: 'center',
+    color: 'white',
   },
-    sesion: {
-        fontSize: 25,
-        textAlign: 'center',
-        marginTop: '70%',
-        color:'white'
+  sesion: {
+    fontSize: 25,
+    textAlign: 'center',
+    marginTop: '70%',
+    color: 'white',
   },
 });

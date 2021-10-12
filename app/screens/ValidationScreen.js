@@ -4,8 +4,8 @@ import {
   Text,
   View,
   Image,
-  Button,
   TouchableOpacity,
+  ImageBackground,
 } from 'react-native';
 
 const image = require('../assets/graphy1.png');
@@ -28,18 +28,26 @@ export default function ValidationScreen({navigation}) {
             </View>
           </View>
         </View>
-        <Text style={styles.reproduciendo}>Reproduciendoooo</Text>
+        <Text style={styles.reproduciendo}>Reproduciendo</Text>
         <Text style={styles.traduccion}>Hoy comí una manzana de desayuno</Text>
         <Text style={styles.coincide}>Coincide cada palabra?</Text>
         <View style={styles.buttons}>
-          <TouchableOpacity title="NO">
-            <Image source={cancelar} style={styles.btn} />
-          </TouchableOpacity>
-          <TouchableOpacity title="NO">
-            <Image source={aceptar} style={styles.btn} />
-          </TouchableOpacity>
+          <ImageBackground
+            source={image}
+            resizeMode="cover"
+            style={styles.image}>
+            <TouchableOpacity
+              title="NO"
+              onPress={() => navigation.navigate('Transcription')}>
+              <Image source={cancelar} style={styles.btn} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              title="SI"
+              onPress={() => navigation.navigate('Result')}>
+              <Image source={aceptar} style={styles.btn} />
+            </TouchableOpacity>
+          </ImageBackground>
         </View>
-        <Image source={image} style={styles.image}></Image>
       </View>
     </>
   );
@@ -73,17 +81,17 @@ const styles = StyleSheet.create({
   },
   image: {
     position: 'relative',
-    top: '4%',
-    left: '10%',
-  },
-  buttons: {
-    position: 'absolute',
-    top: '77%',
-    width: '75%',
+    top: '5%',
+    width: '100%',
+    height: '100%',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    elevation: 3,
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+  },
+  buttons: {
+    height: '27%',
+    width: '100%',
   },
   logo: {
     position: 'absolute',
