@@ -13,6 +13,8 @@ import RegisterScreen from './screens/RegisterScreen';
 import ResultScreen from './screens/ResultScreen';
 import LoginScreen from './screens/LoginScreen';
 import Home from './screens/Home';
+import ProfileScreen from './screens/ProfileScreen';
+import PresentationScreen from './screens/PresentationScreen';
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -30,6 +32,8 @@ const App = () => {
         <Stack.Screen name="Result" component={ResultScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="Presentation" component={PresentationScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
