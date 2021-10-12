@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,68 +7,159 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
-/* import SelectPodcast from "./SelectPodcast"; */
+
+import firebase from '../firebase/config';
+import {validateEmail, validatePassword} from '../utils/validations';
 
 const icon = require('../assets/icon.png');
+const logo = require('../assets/vcapp.png');
+const menu = require('../assets/menu.png');
 
-const Register = () => {
+const Register = ({navigation}) => {
+  const [input, setInput] = useState({
+    email: '',
+    username: '',
+    password: '',
+    password2: '',
+  });
+
+  const handleChangeText = (name, value) => {
+    setInput({...input, [name]: value});
+  };
+
+  const handlePrueba = () => {
+    const {username, email, password} = input;
+    firebase.auth
+      .createUserWithEmailAndPassword(email, password)
+      .then(cred => {
+        return firebase.db
+          .collection('users')
+          .doc(cred.user.uid)
+          .set({
+            email: email,
+            usename: username,
+            isArtist: false,
+          })
+          .then(cred => {
+            Alert.alert('Usuario registrado exitosamente', cred);
+          });
+      })
+      .catch(error => {
+        Alert.alert('Registro incorrecto');
+        console.log('error=========>', error);
+      });
+  };
+
+  const handlePersist = () => {
+    const user = firebase.auth.currentUser;
+    console.log('user==========>', user.email);
+  };
+  const handleSalir = () => {
+    firebase.auth.signOut().then(() => console.log('User signed out!'));
+  };
+  const handleIn = () => {
+    console.log('inputs====>', input);
+  };
+
   return (
-    <View style={styles.conteiner}>
-      <View style={styles.vcApp}>
-        <Text style={styles.vc}>VC </Text>
-        <Text>App</Text>
-        <Image source={icon} style={styles.topIcon} />
-      </View>
+    <View style={styles.container}>
+      <Image source={logo} style={styles.logo} />
+      <Image source={menu} style={styles.menu} />
       {/* --------------------FORMULARIO-------------------------- */}
       <View style={styles.caja}>
         <View style={styles.title}>
           <Text style={styles.text}>Ingresá tus datos</Text>
         </View>
         <View style={styles.cajaInputs}>
-          <Text style={{color: 'grey'}}>Email</Text>
-          <TextInput /* value={text} */ placeholder="Email" />
-        </View>
-        <View style={styles.cajaInputs}>
-          <Text style={{color: 'grey'}}>Contraseña</Text>
+          <Text style={styles.inputTitle}>Email</Text>
           <TextInput
-            /* value={text} */ placeholder="Contraseña"
-            secureTextEntry={true}
+            style={styles.input}
+            onChangeText={value => handleChangeText('email', value)}
+            // onBlur={() => onBlurValidateEmail(input.email)}
           />
         </View>
         <View style={styles.cajaInputs}>
-          <Text style={{color: 'grey'}}>Repetir contraseña</Text>
+          <Text style={styles.inputTitle}>Username</Text>
           <TextInput
-            /* value={text} */ placeholder="Repetir contraseña"
+            style={styles.input}
             secureTextEntry={true}
+            onChangeText={value => handleChangeText('username', value)}
+          />
+        </View>
+        <View style={styles.cajaInputs}>
+          <Text style={styles.inputTitle}>Contraseña</Text>
+          <TextInput
+            style={styles.input}
+            secureTextEntry={true}
+            onChangeText={value => handleChangeText('password', value)}
+            // onBlur={e => {
+            //   onBlurValidatePassword(input.password);
+            // }}
+          />
+        </View>
+        <View style={styles.cajaInputs}>
+          <Text style={styles.inputTitle}>Repetir contraseña</Text>
+          <TextInput
+            style={styles.input}
+            secureTextEntry={true}
+            onChangeText={value => handleChangeText('password2', value)}
+            // onBlur={e => {
+            //   onBlurValidatePassword2(input.password2);
+            // }}
           />
         </View>
 
         <View style={styles.button}>
-          <TouchableOpacity style={styles.touch}>
+          <TouchableOpacity
+            style={styles.touch}
+            onPress={() => navigation.navigate('Login')}>
             <Text style={styles.touchText}>Continuar</Text>
           </TouchableOpacity>
         </View>
+        {/* <TouchableOpacity style={styles.touch} onPress={() => handlePrueba()}>
+          <Text style={styles.touchText}>Prueba</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.touch} onPress={() => handlePersist()}>
+          <Text style={styles.touchText}>handlePersist</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.touch} onPress={() => handleSalir()}>
+          <Text style={styles.touchText}>salir</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.touch} onPress={() => handleIn()}>
+          <Text style={styles.touchText}>INPUTS</Text>
+        </TouchableOpacity> */}
       </View>
-      {/* ------------------------------------------------------------- */}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  topIcon: {marginLeft: 220},
-  vc: {
-    color: '#21A1FC',
-  },
-  vcApp: {
+  logo: {
     position: 'absolute',
-    padding: 40,
-    flex: 1,
-    flexDirection: 'row',
+    width: 60,
+    height: 20,
+    left: 10,
+    top: 15,
   },
-  conteiner: {
+  menu: {
+    position: 'absolute',
+    right: 10,
+    top: 15,
+  },
+  container: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  input: {
+    backgroundColor: '#fff',
+    marginTop: 5,
+    borderRadius: 6,
+    marginBottom: 23,
+  },
+  inputTitle: {
+    color: 'grey',
   },
   title: {
     flex: 1,
@@ -86,6 +177,7 @@ const styles = StyleSheet.create({
     elevation: 8,
     paddingVertical: 10,
     paddingHorizontal: 12,
+    marginTop: 25,
   },
   touchText: {color: '#fff', textAlign: 'center'},
   touch1: {
@@ -112,7 +204,7 @@ const styles = StyleSheet.create({
   link: {
     textDecorationLine: 'underline',
   },
-  caja: {flex: 1, backgroundColor: '#F5FBFF', marginTop: 250},
+  caja: {flex: 1, backgroundColor: '#EBF7FF', marginTop: 220},
   cajaInputs: {flex: 1, marginLeft: 40, marginRight: 40},
 });
 

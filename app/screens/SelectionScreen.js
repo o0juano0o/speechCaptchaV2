@@ -17,9 +17,9 @@ export default function SelectionScreen({navigation}) {
       <Button
         title="Go to Validation"
         onPress={() => navigation.navigate('Validation')}></Button>
-      <Button
+      {/* <Button
         title="Go to CircleComponent"
-        onPress={() => navigation.navigate('Circle')}></Button>
+        onPress={() => navigation.navigate('Circle')}></Button> */}
       <Button
         title="Go to Register"
         onPress={() => navigation.navigate('Register')}></Button>

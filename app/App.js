@@ -7,24 +7,16 @@ import PodcastScreen from './screens/PodcastScreen';
 import SelectionScreen from './screens/SelectionScreen';
 import UploadPodcastScreen from './screens/UploadPodcastScreen';
 import ValidationScreen from './screens/ValidationScreen';
+import TranscriptionScreen from './screens/TranscriptionScreen';
 import CircleComponent from './screens/CircleComponent';
 import RegisterScreen from './screens/RegisterScreen';
-import Home from './screens/Logeo';
+import ResultScreen from './screens/ResultScreen';
+import LoginScreen from './screens/LoginScreen';
+import Home from './screens/Home';
 import ProfileScreen from './screens/ProfileScreen';
 import PresentationScreen from './screens/PresentationScreen';
 
 const App = () => {
-  const handleClick = () => {
-    functions()
-      .httpsCallable('getUsers')()
-      .then(response => {
-        console.log(response.data[0].data.name);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
   const Stack = createNativeStackNavigator();
 
   return (
@@ -35,12 +27,14 @@ const App = () => {
         <Stack.Screen name="Podcast" component={PodcastScreen} />
         <Stack.Screen name="Upload" component={UploadPodcastScreen} />
         <Stack.Screen name="Validation" component={ValidationScreen} />
+        <Stack.Screen name="Transcription" component={TranscriptionScreen} />
         <Stack.Screen name="Circle" component={CircleComponent} />
+        <Stack.Screen name="Result" component={ResultScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="Presentation" component={PresentationScreen} />
       </Stack.Navigator>
-      
     </NavigationContainer>
   );
 };
