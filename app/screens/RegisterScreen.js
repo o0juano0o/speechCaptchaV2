@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useRecoilState} from 'recoil';
 import {
   StyleSheet,
   Text,
@@ -13,9 +14,13 @@ import {
 import firebase from '../firebase/config';
 import {validateEmail, validatePassword} from '../utils/validations';
 
+// ASSETS
 const icon = require('../assets/icon.png');
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
+
+// RECOIL
+import {userLogged} from '../recoil/userLogged';
 
 const Register = ({navigation}) => {
   const [input, setInput] = useState({
@@ -24,6 +29,7 @@ const Register = ({navigation}) => {
     password: '',
     password2: '',
   });
+  const [user, setUser] = useRecoilState(userLogged);
 
   const handleChangeText = (name, value) => {
     setInput({...input, [name]: value});
@@ -40,27 +46,26 @@ const Register = ({navigation}) => {
           .set({
             email: email,
             usename: username,
+            score: 0,
             isArtist: false,
           })
           .then(cred => {
-            Alert.alert('Usuario registrado exitosamente', cred);
+            Alert.alert('Usuario registrado exitosamente');
+            const {email, uid} = firebase.auth.currentUser;
+            setUser({email: email, uid: uid});
+            navigation.navigate('Podcast');
           });
       })
       .catch(error => {
         Alert.alert('Registro incorrecto');
-        console.log('error=========>', error);
+        console.log('Register error =====>', error);
       });
-  };
-
-  const handlePersist = () => {
-    const user = firebase.auth.currentUser;
-    console.log('user==========>', user.email);
-  };
-  const handleSalir = () => {
-    firebase.auth.signOut().then(() => console.log('User signed out!'));
-  };
-  const handleIn = () => {
-    console.log('inputs====>', input);
+    setInput({
+      email: '',
+      username: '',
+      password: '',
+      password2: '',
+    });
   };
 
   return (
@@ -77,6 +82,7 @@ const Register = ({navigation}) => {
           <TextInput
             style={styles.input}
             onChangeText={value => handleChangeText('email', value)}
+            value={input.email}
             // onBlur={() => onBlurValidateEmail(input.email)}
           />
         </View>
@@ -84,8 +90,8 @@ const Register = ({navigation}) => {
           <Text style={styles.inputTitle}>Username</Text>
           <TextInput
             style={styles.input}
-            secureTextEntry={true}
             onChangeText={value => handleChangeText('username', value)}
+            value={input.username}
           />
         </View>
         <View style={styles.cajaInputs}>
@@ -94,6 +100,7 @@ const Register = ({navigation}) => {
             style={styles.input}
             secureTextEntry={true}
             onChangeText={value => handleChangeText('password', value)}
+            value={input.password}
             // onBlur={e => {
             //   onBlurValidatePassword(input.password);
             // }}
@@ -105,6 +112,7 @@ const Register = ({navigation}) => {
             style={styles.input}
             secureTextEntry={true}
             onChangeText={value => handleChangeText('password2', value)}
+            value={input.password2}
             // onBlur={e => {
             //   onBlurValidatePassword2(input.password2);
             // }}
@@ -114,21 +122,12 @@ const Register = ({navigation}) => {
         <View style={styles.button}>
           <TouchableOpacity
             style={styles.touch}
-            onPress={() => navigation.navigate('Login')}>
+            onPress={() => handlePrueba() /* navigation.navigate('Login') */}>
             <Text style={styles.touchText}>Continuar</Text>
           </TouchableOpacity>
         </View>
-        {/* <TouchableOpacity style={styles.touch} onPress={() => handlePrueba()}>
-          <Text style={styles.touchText}>Prueba</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.touch} onPress={() => handlePersist()}>
-          <Text style={styles.touchText}>handlePersist</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.touch} onPress={() => handleSalir()}>
-          <Text style={styles.touchText}>salir</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.touch} onPress={() => handleIn()}>
-          <Text style={styles.touchText}>INPUTS</Text>
+        {/* <TouchableOpacity style={styles.touch} onPress={() => handleIn()}>
+          <Text style={styles.touchText}>recoil</Text>
         </TouchableOpacity> */}
       </View>
     </View>
