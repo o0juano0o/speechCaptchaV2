@@ -20,7 +20,14 @@ export default function ValidationScreen({navigation}) {
     <>
       <View style={styles.container}>
         <Image source={logo} style={styles.logo} />
-        <Image source={menu} style={styles.menu} />
+        {/* <Image source={menu} style={styles.menu} /> */}
+        {/* ----------------MENU------------------------ */}
+        <TouchableOpacity
+          onPress={() => navigation.navigate('BlueUser')}
+          style={styles.menu}>
+          <Image source={menu} />
+        </TouchableOpacity>
+        {/* -------------------------------------------- */}
         <View style={styles.shadow}>
           <View style={styles.circleBig}>
             <View style={styles.circleSmall}>

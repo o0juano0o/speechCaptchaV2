@@ -10,7 +10,10 @@ export default function profileScreen({navigation}) {
       <Text style={styles.logo}>
         <Text style={styles.vc}>VC</Text> App
       </Text>
-      <Image source={menu} style={styles.menu} />
+      <TouchableOpacity style={styles.menu} onPress={() => navigation.goBack()}>
+        <Text style={styles.menu}>X</Text>
+      </TouchableOpacity>
+      {/* <Image source={menu} style={styles.menu} /> */}
       <View style={styles.container1}>
         <TouchableOpacity onPress={() => navigation.navigate('Upload')}>
           <Text style={styles.desafios}>Mis podcasts</Text>
@@ -45,19 +48,24 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   menu: {
-    position: 'absolute',
+    /*     position: 'absolute',
     right: '5%',
     top: '1%',
     backgroundColor: '#27A2FC',
-    tintColor:'white'
+    tintColor:'white' */
+    color: 'white',
+    position: 'absolute',
+    right: '5%',
+    top: '1%',
+    fontSize: 20,
   },
   container1: {
     backgroundColor: '#27A2FC',
     marginTop: '-25%',
     height: '50%',
     width: '80%',
-    borderColor: 'gray',
-    borderWidth: 1,
+    /*     borderColor: 'gray',
+    borderWidth: 1, */
   },
   desafios: {
     fontSize: 25,

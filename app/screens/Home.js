@@ -16,7 +16,13 @@ const Home = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.logo} />
-      <Image source={menu} style={styles.menu} />
+      {/* ----------------MENU------------------------ */}
+      <TouchableOpacity
+        onPress={() => navigation.navigate('BlueUser')}
+        style={styles.menu}>
+        <Image source={menu} />
+      </TouchableOpacity>
+      {/* -------------------------------------------- */}
       <Text style={styles.titulo}>Creá tu cuenta</Text>
       <View style={styles.buttons}>
         <TouchableOpacity

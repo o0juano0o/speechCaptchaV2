@@ -15,13 +15,20 @@ const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
 const image = require('../assets/graphy1.png');
 const descarga = require('../assets/cloud-computing.png');
-const Upload = () => {
+const Upload = ({navigation}) => {
   const [result, setResult] = React.useState([]);
 
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.logo} />
-      <Image source={menu} style={styles.menu} />
+      {/* <Image source={menu} style={styles.menu} /> */}
+      {/* ----------------MENU------------------------ */}
+      <TouchableOpacity
+        onPress={() => navigation.navigate('BlueUser')}
+        style={styles.menu}>
+        <Image source={menu} />
+      </TouchableOpacity>
+      {/* -------------------------------------------- */}
       <Text style={styles.title}>Mis podcasts</Text>
 
       <View style={styles.podcast}>
