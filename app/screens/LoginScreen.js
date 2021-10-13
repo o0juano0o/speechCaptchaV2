@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {useRecoilState} from 'recoil';
 import {
   StyleSheet,
   Text,
@@ -9,11 +10,45 @@ import {
   TextInput,
 } from 'react-native';
 
+import firebase from '../firebase/config';
+
 const icon = require('../assets/icon.png');
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
 
+// RECOIL
+import {userLogged} from '../recoil/userLogged';
+
 const Login = ({navigation}) => {
+  const [input, setInput] = useState({
+    email: '',
+    password: '',
+  });
+  const [user, setUser] = useRecoilState(userLogged);
+
+  const handleChangeText = (name, value) => {
+    setInput({...input, [name]: value});
+  };
+
+  const handleLoggin = () => {
+    const {email, password} = input;
+    firebase.auth
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        console.log('User logged in successfully');
+        const {uid} = firebase.auth.currentUser;
+        setUser({uid: uid});
+        navigation.navigate('Home');
+      })
+      .catch(error => {
+        alert(error.message);
+      });
+    setInput({
+      email: '',
+      password: '',
+    });
+  };
+
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.logo} />
@@ -25,15 +60,27 @@ const Login = ({navigation}) => {
         </View>
         <View style={styles.cajaInputs}>
           <Text style={{color: 'grey'}}>Email</Text>
-          <TextInput style={styles.input} />
+          <TextInput
+            style={styles.input}
+            onChangeText={value => handleChangeText('email', value)}
+            value={input.email}
+          />
           <Text style={{color: 'grey'}}>Contraseña</Text>
-          <TextInput style={styles.input} secureTextEntry={true} />
+          <TextInput
+            style={styles.input}
+            secureTextEntry={true}
+            onChangeText={value => handleChangeText('password', value)}
+            value={input.password}
+          />
         </View>
         <View style={styles.button}>
+          <TouchableOpacity style={styles.touch} onPress={() => handleLoggin()}>
+            <Text style={styles.touchText}>Continuar</Text>
+          </TouchableOpacity>
           <TouchableOpacity
             style={styles.touch}
-            onPress={() => navigation.navigate('Podcast')}>
-            <Text style={styles.touchText}>Continuar</Text>
+            onPress={() => console.log(user)}>
+            <Text style={styles.touchText}>ver estado</Text>
           </TouchableOpacity>
         </View>
       </View>

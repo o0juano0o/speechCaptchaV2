@@ -1,7 +1,23 @@
 import React from 'react';
+import {useRecoilState} from 'recoil';
 import {StyleSheet, Text, View, Button} from 'react-native';
 
+import firebase from '../firebase/config';
+import {userLogged} from '../recoil/userLogged';
+
 export default function SelectionScreen({navigation}) {
+  const [user, setUser] = useRecoilState(userLogged);
+
+  const handleSalir = () => {
+    firebase.auth
+      .signOut()
+      .then(() => {
+        setUser({});
+        console.log('User signed out!');
+      })
+      .catch(error => console.log('error de cerrar sesion'));
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Menu</Text>
@@ -29,6 +45,10 @@ export default function SelectionScreen({navigation}) {
       <Button
         title="Go to Presentation"
         onPress={() => navigation.navigate('Presentation')}></Button>
+      <Button
+        title="Login"
+        onPress={() => navigation.navigate('Login')}></Button>
+      <Button title="Cerrar sesion" onPress={() => handleSalir()}></Button>
     </View>
   );
 }

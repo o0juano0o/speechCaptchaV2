@@ -76,3 +76,12 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 });
+
+// firebase.db
+//   .collection('users')
+//   .doc(uid)
+//   .get()
+//   .then(res => {
+//     const data = res._data;
+//     setUser({...user, data});
+//   });
