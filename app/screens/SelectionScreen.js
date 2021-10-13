@@ -8,6 +8,25 @@ import {userLogged} from '../recoil/userLogged';
 export default function SelectionScreen({navigation}) {
   const [user, setUser] = useRecoilState(userLogged);
 
+  const listAudios = () => {
+    const storageRef = firebase.storage.ref();
+    const audiosRef = storageRef.child('audios');
+    audiosRef
+      .listAll()
+      .then(res => {
+        res.items.forEach(item => {
+          console.log(item.path);
+          let audioRef = storageRef.child(item.path);
+          audioRef.getDownloadURL().then(res => {
+            console.log(res);
+          });
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   const handleSalir = () => {
     firebase.auth
       .signOut()
@@ -52,6 +71,7 @@ export default function SelectionScreen({navigation}) {
         title="Login"
         onPress={() => navigation.navigate('Login')}></Button>
       <Button title="Cerrar sesion" onPress={() => handleSalir()}></Button>
+      <Button title="listar Storage" onPress={() => listAudios()}></Button>
     </View>
   );
 }
