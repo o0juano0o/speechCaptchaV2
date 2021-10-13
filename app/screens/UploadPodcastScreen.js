@@ -8,8 +8,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-// import * as firebase from '@react-native-firebase/app';
-// import storage from '@react-native-firebase/storage';
+import * as firebase from '@react-native-firebase/app';
+import storage from '@react-native-firebase/storage';
+import firestore from '@react-native-firebase/firestore';
 import DocumentPicker from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import RNFS from 'react-native-fs';
@@ -63,26 +64,27 @@ const Upload = () => {
           const audio = await pickDocument();
           //console.log('este audio', audio.uri);
 
-          //const reference = storage().ref(`audios/${audio.name}`);
+          const reference = storage().ref(`audios/${audio.name}`);
 
-          // RNFetchBlob.fs
-          //   .stat(audio.uri)
-          //   .then(async stats => {
-          //     console.log(stats.path);
-          //     reference
-          //       .putFile(stats.path)
-          //       .then(res => console.log(res))
-          //       .catch(err => console.log(err));
+          RNFetchBlob.fs
+            .stat(audio.uri)
+            .then(async stats => {
+              console.log(stats.path);
+              reference
+                .putFile(stats.path)
+                .then(res => console.log(res))
+                .catch(err => console.log(err));
 
-          //     const exportedFileContent = await RNFS.readFile(
-          //       audio.uri,
-          //       'base64',
-          //     );
-          //   })
-          //   .catch(err => {});
+              const exportedFileContent = await RNFS.readFile(
+                audio.uri,
+                'base64',
+              );
+              const transcription = await getTranscription(exportedFileContent);
+            })
+            .catch(err => {});
 
-          const exportedFileContent = await RNFS.readFile(audio.uri, 'base64');
-          getTranscription(exportedFileContent);
+          // const exportedFileContent = await RNFS.readFile(audio.uri, 'base64');
+          // getTranscription(exportedFileContent);
         }}>
         <Text style={styles.text2}>Crear nuevo podcast</Text>
       </TouchableOpacity>
