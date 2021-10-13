@@ -37,7 +37,10 @@ const AppContainer = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}>
         <Stack.Screen name="Selection" component={SelectionScreen} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Podcast" component={PodcastScreen} />
