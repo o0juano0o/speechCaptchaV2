@@ -68,10 +68,15 @@ export default function SelectionScreen({navigation}) {
         title="Go to Presentation"
         onPress={() => navigation.navigate('Presentation')}></Button>
       <Button
+        title="Go to total points"
+        onPress={() => navigation.navigate('TotalPoints')}></Button>
+      <Button
         title="Login"
         onPress={() => navigation.navigate('Login')}></Button>
-      <Button title="Cerrar sesion" onPress={() => handleSalir()}></Button>
-      <Button title="listar Storage" onPress={() => listAudios()}></Button>
+      <Button
+        title="Cerrar sesion" onPress={() => handleSalir()}></Button>
+      <Button
+        title="listar Storage" onPress={() => listAudios()}></Button>
     </View>
   );
 }
