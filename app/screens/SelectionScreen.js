@@ -1,12 +1,60 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useRecoilState} from 'recoil';
 import {StyleSheet, Text, View, Button} from 'react-native';
 
 import firebase from '../firebase/config';
 import {userLogged} from '../recoil/userLogged';
 
+import TrackPlayer, {
+  Capability,
+  Event,
+  RepeatMode,
+  State,
+  usePlaybackState,
+  useProgress,
+  useTrackPlayerEvents,
+} from 'react-native-track-player';
+
+const songs = [
+  {
+    id: 1,
+    url: 'https://firebasestorage.googleapis.com/v0/b/speechcaptcha-6fec5.appspot.com/o/audios%2Ftest2.wav?alt=media&token=5b3cc87d-cdd4-4965-9a66-42126a9fb8c8',
+    title: 'prueba2',
+  },
+  {
+    id: 2,
+    url: 'https://firebasestorage.googleapis.com/v0/b/speechcaptcha-6fec5.appspot.com/o/audios%2Ftest2.wav?alt=media&token=5b3cc87d-cdd4-4965-9a66-42126a9fb8c8',
+    title: 'prueba2.0',
+  },
+];
+
+const setupPlayer = async () => {
+  await TrackPlayer.setupPlayer();
+
+  await TrackPlayer.add(songs);
+};
+
+const togglePlayback = async playbackState => {
+  const currentTrack = await TrackPlayer.getCurrentTrack();
+
+  if (currentTrack !== null) {
+    if (playbackState === State.Paused) {
+      await TrackPlayer.play();
+    } else {
+      await TrackPlayer.pause();
+    }
+  }
+
+  await TrackPlayer.add(songs);
+};
+
 export default function SelectionScreen({navigation}) {
   const [user, setUser] = useRecoilState(userLogged);
+  const playbackState = usePlaybackState();
+
+  useEffect(() => {
+    setupPlayer();
+  }, []);
 
   const listAudios = () => {
     const storageRef = firebase.storage.ref();
@@ -74,7 +122,9 @@ export default function SelectionScreen({navigation}) {
         title="Login"
         onPress={() => navigation.navigate('Login')}></Button>
       <Button title="Cerrar sesion" onPress={() => handleSalir()}></Button>
-      <Button title="listar Storage" onPress={() => listAudios()}></Button>
+      <Button
+        title="repro"
+        onPress={() => togglePlayback(playbackState)}></Button>
     </View>
   );
 }
