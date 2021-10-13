@@ -1,7 +1,42 @@
 import React from 'react';
+import {useRecoilState} from 'recoil';
 import {StyleSheet, Text, View, Button} from 'react-native';
 
+import firebase from '../firebase/config';
+import {userLogged} from '../recoil/userLogged';
+
 export default function SelectionScreen({navigation}) {
+  const [user, setUser] = useRecoilState(userLogged);
+
+  const listAudios = () => {
+    const storageRef = firebase.storage.ref();
+    const audiosRef = storageRef.child('audios');
+    audiosRef
+      .listAll()
+      .then(res => {
+        res.items.forEach(item => {
+          console.log(item.path);
+          let audioRef = storageRef.child(item.path);
+          audioRef.getDownloadURL().then(res => {
+            console.log(res);
+          });
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const handleSalir = () => {
+    firebase.auth
+      .signOut()
+      .then(() => {
+        setUser({});
+        console.log('User signed out!');
+      })
+      .catch(error => console.log('error de cerrar sesion'));
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Menu</Text>
@@ -24,14 +59,24 @@ export default function SelectionScreen({navigation}) {
         title="Go to Register"
         onPress={() => navigation.navigate('Register')}></Button>
       <Button
-        title="Go to Profile"
-        onPress={() => navigation.navigate('Profile')}></Button>
+        title="Go to BlueUser"
+        onPress={() => navigation.navigate('BlueUser')}></Button>
+      <Button
+        title="Go to BlueArtist"
+        onPress={() => navigation.navigate('BlueArtist')}></Button>
       <Button
         title="Go to Presentation"
         onPress={() => navigation.navigate('Presentation')}></Button>
       <Button
         title="Go to total points"
         onPress={() => navigation.navigate('TotalPoints')}></Button>
+      <Button
+        title="Login"
+        onPress={() => navigation.navigate('Login')}></Button>
+      <Button
+        title="Cerrar sesion" onPress={() => handleSalir()}></Button>
+      <Button
+        title="listar Storage" onPress={() => listAudios()}></Button>
     </View>
   );
 }

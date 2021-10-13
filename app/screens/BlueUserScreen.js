@@ -4,7 +4,7 @@ import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
 
-export default function profileScreen() {
+export default function profileScreen({navigation}) {
   return (
     <View style={styles.container}>
       <Text style={styles.logo}>
@@ -15,7 +15,7 @@ export default function profileScreen() {
         <TouchableOpacity>
           <Text style={styles.desafios}>Desafíos</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('ProfileUser')}>
           <Text style={styles.perfil}>Mi perfil</Text>
         </TouchableOpacity>
         <TouchableOpacity>
@@ -48,7 +48,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: '5%',
     top: '1%',
-    backgroundColor: 'white',
+    backgroundColor: '#27A2FC',
+    tintColor:'white'
   },
   container1: {
     backgroundColor: '#27A2FC',
@@ -76,3 +77,12 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 });
+
+// firebase.db
+//   .collection('users')
+//   .doc(uid)
+//   .get()
+//   .then(res => {
+//     const data = res._data;
+//     setUser({...user, data});
+//   });
