@@ -10,6 +10,7 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import firebase from '../firebase/config';
 import {validateEmail, validatePassword} from '../utils/validations';
@@ -69,75 +70,77 @@ const Register = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Image source={logo} style={styles.logo} />
-      {/* <Image source={menu} style={styles.menu} /> */}
-      {/* ----------------MENU------------------------ */}
-      <TouchableOpacity
-        onPress={() => navigation.navigate('BlueUser')}
-        style={styles.menu}>
-        <Image source={menu} />
-      </TouchableOpacity>
-      {/* -------------------------------------------- */}
-      {/* --------------------FORMULARIO-------------------------- */}
-      <View style={styles.caja}>
-        <View style={styles.title}>
-          <Text style={styles.text}>Ingresá tus datos</Text>
-        </View>
-        <View style={styles.cajaInputs}>
-          <Text style={styles.inputTitle}>Email</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={value => handleChangeText('email', value)}
-            value={input.email}
-            // onBlur={() => onBlurValidateEmail(input.email)}
-          />
-        </View>
-        <View style={styles.cajaInputs}>
-          <Text style={styles.inputTitle}>Username</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={value => handleChangeText('username', value)}
-            value={input.username}
-          />
-        </View>
-        <View style={styles.cajaInputs}>
-          <Text style={styles.inputTitle}>Contraseña</Text>
-          <TextInput
-            style={styles.input}
-            secureTextEntry={true}
-            onChangeText={value => handleChangeText('password', value)}
-            value={input.password}
-            // onBlur={e => {
-            //   onBlurValidatePassword(input.password);
-            // }}
-          />
-        </View>
-        <View style={styles.cajaInputs}>
-          <Text style={styles.inputTitle}>Repetir contraseña</Text>
-          <TextInput
-            style={styles.input}
-            secureTextEntry={true}
-            onChangeText={value => handleChangeText('password2', value)}
-            value={input.password2}
-            // onBlur={e => {
-            //   onBlurValidatePassword2(input.password2);
-            // }}
-          />
-        </View>
+    <KeyboardAwareScrollView style={{flex: 1}}>
+      <View style={styles.container}>
+        <Image source={logo} style={styles.logo} />
+        {/* <Image source={menu} style={styles.menu} /> */}
+        {/* ----------------MENU------------------------ */}
+        <TouchableOpacity
+          onPress={() => navigation.navigate('BlueUser')}
+          style={styles.menu}>
+          <Image source={menu} />
+        </TouchableOpacity>
+        {/* -------------------------------------------- */}
+        {/* --------------------FORMULARIO-------------------------- */}
+        <View style={styles.caja}>
+          <View style={styles.title}>
+            <Text style={styles.text}>Ingresá tus datos</Text>
+          </View>
+          <View style={styles.cajaInputs}>
+            <Text style={styles.inputTitle}>Email</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={value => handleChangeText('email', value)}
+              value={input.email}
+              // onBlur={() => onBlurValidateEmail(input.email)}
+            />
+          </View>
+          <View style={styles.cajaInputs}>
+            <Text style={styles.inputTitle}>Username</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={value => handleChangeText('username', value)}
+              value={input.username}
+            />
+          </View>
+          <View style={styles.cajaInputs}>
+            <Text style={styles.inputTitle}>Contraseña</Text>
+            <TextInput
+              style={styles.input}
+              secureTextEntry={true}
+              onChangeText={value => handleChangeText('password', value)}
+              value={input.password}
+              // onBlur={e => {
+              //   onBlurValidatePassword(input.password);
+              // }}
+            />
+          </View>
+          <View style={styles.cajaInputs}>
+            <Text style={styles.inputTitle}>Repetir contraseña</Text>
+            <TextInput
+              style={styles.input}
+              secureTextEntry={true}
+              onChangeText={value => handleChangeText('password2', value)}
+              value={input.password2}
+              // onBlur={e => {
+              //   onBlurValidatePassword2(input.password2);
+              // }}
+            />
+          </View>
 
-        <View style={styles.button}>
-          <TouchableOpacity
-            style={styles.touch}
-            onPress={() => handlePrueba() /* navigation.navigate('Login') */}>
-            <Text style={styles.touchText}>Continuar</Text>
-          </TouchableOpacity>
-        </View>
-        {/* <TouchableOpacity style={styles.touch} onPress={() => handleIn()}>
+          <View style={styles.button}>
+            <TouchableOpacity
+              style={styles.touch}
+              onPress={() => handlePrueba() /* navigation.navigate('Login') */}>
+              <Text style={styles.touchText}>Continuar</Text>
+            </TouchableOpacity>
+          </View>
+          {/* <TouchableOpacity style={styles.touch} onPress={() => handleIn()}>
           <Text style={styles.touchText}>recoil</Text>
         </TouchableOpacity> */}
+        </View>
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -162,7 +165,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     marginTop: 5,
     borderRadius: 6,
-    marginBottom: 23,
+    marginBottom: 11,
   },
   inputTitle: {
     color: 'grey',

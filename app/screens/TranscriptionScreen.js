@@ -9,6 +9,8 @@ import {
   TextInput,
 } from 'react-native';
 
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
 const image = require('../assets/graphy1.png');
 const pauseIcon = require('../assets/pause.png');
 const logo = require('../assets/vcapp.png');
@@ -22,10 +24,16 @@ export default function TranscriptionScreen({navigation}) {
   };
 
   return (
-    <>
+    <KeyboardAwareScrollView style={{flex: 1}}>
       <View style={styles.container}>
         <Image source={logo} style={styles.logo} />
-        <Image source={menu} style={styles.menu} />
+        {/* ----------------MENU------------------------ */}
+        <TouchableOpacity
+          onPress={() => navigation.navigate('BlueUser')}
+          style={styles.menu}>
+          <Image source={menu} />
+        </TouchableOpacity>
+        {/* -------------------------------------------- */}
         <Text style={styles.titulo}>Presta atención al sonido</Text>
         <View style={styles.shadow}>
           <View style={styles.circleBig}>
@@ -48,16 +56,16 @@ export default function TranscriptionScreen({navigation}) {
           <Text style={styles.enviarText}>Enviar</Text>
         </TouchableOpacity>
       </View>
-    </>
+    </KeyboardAwareScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    /* flex: 1, */
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
+    /* backgroundColor: 'white', */
   },
   input: {
     backgroundColor: '#eee',
