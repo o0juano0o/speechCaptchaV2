@@ -6,7 +6,7 @@ const Duplex = require("stream").Duplex;
 const Wav = require("node-wav");
 const path = require("path");
 
-const transcription = async (audio) => {
+const transcription = async audio => {
   let modelPath = path.join(__dirname, "/spanish/output_graph_es.pbmm");
   let model = new DeepSpeech.Model(modelPath);
   let desiredSampleRate = model.sampleRate();

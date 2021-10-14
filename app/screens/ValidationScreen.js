@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import {useRecoilState} from 'recoil';
 import {
   StyleSheet,
   Text,
@@ -10,12 +11,54 @@ import {
 
 const image = require('../assets/graphy1.png');
 const pauseIcon = require('../assets/pause.png');
+const playIcon = require('../assets/play.png');
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
 const aceptar = require('../assets/aceptar.png');
 const cancelar = require('../assets/cancelar.png');
 
+import TrackPlayer, {State, usePlaybackState} from 'react-native-track-player';
+
+const setupPlayer = async podcast => {
+  await TrackPlayer.setupPlayer();
+  await TrackPlayer.destroy();
+  await TrackPlayer.add(podcast);
+};
+
+import {selectedPodcast} from '../recoil/selectedPodcast';
+
+const playTrack = async (playbackState, podcast) => {
+  const currentTrack = await TrackPlayer.getCurrentTrack();
+
+  if (currentTrack !== null) {
+    if (playbackState === State.Paused) {
+      await TrackPlayer.play();
+    } else {
+      await TrackPlayer.reset();
+    }
+  }
+
+  await TrackPlayer.add(podcast);
+};
+
 export default function ValidationScreen({navigation}) {
+  const [podcast, setPodcast] = useRecoilState(selectedPodcast);
+  const [playing, setPlaying] = useState(false);
+  const playbackState = usePlaybackState();
+
+  useEffect(() => {
+    if (podcast.url) setupPlayer([podcast]);
+  }, [podcast]);
+
+  const handlePlay = () => {
+    playTrack(playbackState, [podcast]);
+    if (playing) {
+      setPlaying(false);
+    } else {
+      setPlaying(true);
+    }
+  };
+
   return (
     <>
       <View style={styles.container}>
@@ -31,11 +74,21 @@ export default function ValidationScreen({navigation}) {
         <View style={styles.shadow}>
           <View style={styles.circleBig}>
             <View style={styles.circleSmall}>
-              <Image source={pauseIcon} style={styles.pause}></Image>
+              <TouchableOpacity onPress={() => handlePlay()}>
+                {playing ? (
+                  <Image source={pauseIcon} style={styles.pause}></Image>
+                ) : (
+                  <Image source={playIcon} style={styles.pause}></Image>
+                )}
+              </TouchableOpacity>
             </View>
           </View>
         </View>
-        <Text style={styles.reproduciendo}>Reproduciendo</Text>
+        {playing ? (
+          <Text style={styles.reproduciendo}>Reproduciendo</Text>
+        ) : (
+          <Text style={styles.reproduciendo}>Reproducir</Text>
+        )}
         <Text style={styles.traduccion}>Hoy comí una manzana de desayuno</Text>
         <Text style={styles.coincide}>Coincide cada palabra?</Text>
         <View style={styles.buttons}>
@@ -88,7 +141,7 @@ const styles = StyleSheet.create({
   },
   image: {
     position: 'relative',
-    top: '5%',
+    top: '10%',
     width: '100%',
     height: '100%',
     display: 'flex',
