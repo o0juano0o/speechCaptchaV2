@@ -27,7 +27,7 @@ export default function PresentationScreen({ navigation }) {
       <Image
         source={image}
         style={styles.image}></Image>
-      <TouchableOpacity style={styles.sesion} onPress={() => navigation.navigate(user.uid?'Podcast':'Register')}>
+      <TouchableOpacity style={styles.sesion} onPress={() => navigation.navigate(user.uid?'Podcast':'Home')}>
           <Text style={styles.text}>Empezar</Text>
         </TouchableOpacity>
     </View>

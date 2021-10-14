@@ -24,8 +24,14 @@ export default function TranscriptionScreen({navigation}) {
   return (
     <>
       <View style={styles.container}>
-        <Image source={logo} style={styles.logo} />
-        <Image source={menu} style={styles.menu} />
+      <Image source={logo} style={styles.logo} />
+      {/* ----------------MENU------------------------ */}
+      <TouchableOpacity
+        onPress={() => navigation.navigate('BlueUser')}
+        style={styles.menu}>
+        <Image source={menu} />
+      </TouchableOpacity>
+      {/* -------------------------------------------- */}
         <Text style={styles.titulo}>Presta atención al sonido</Text>
         <View style={styles.shadow}>
           <View style={styles.circleBig}>
@@ -97,18 +103,19 @@ const styles = StyleSheet.create({
     opacity: 0.8,
     fontSize: 23,
     marginTop: '15%',
+    fontWeight: 'bold',
   },
   logo: {
     position: 'absolute',
     width: 60,
     height: 20,
-    left: 10,
-    top: 15,
+    left: '5%',
+    top: '2%',
   },
   menu: {
     position: 'absolute',
-    right: 10,
-    top: 15,
+    right: '5%',
+    top: '2%',
   },
   //REPRODUCIENDO
   shadow: {

@@ -43,7 +43,6 @@ const Upload = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.logo} />
-      {/* <Image source={menu} style={styles.menu} /> */}
       {/* ----------------MENU------------------------ */}
       <TouchableOpacity
         onPress={() => navigation.navigate('BlueUser')}
@@ -105,15 +104,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    position: 'relative',
-    fontSize: 25,
-    width: '45%',
+    fontSize: 30,
     top: '10%',
-    opacity: 0.8,
-    color: 'gray',
+    color: '#5b5d68',
     fontWeight: 'bold',
-    justifyContent: 'center',
     marginBottom: '25%',
+     textAlign: 'center',
   },
   text: {
     top: '-15%',
