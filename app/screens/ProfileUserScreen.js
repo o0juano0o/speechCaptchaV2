@@ -1,11 +1,15 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import {useRecoilState} from 'recoil';
+import { userLogged } from '../recoil/userLogged';
 
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
 const image = require('../assets/graphy1.png');
 
 export default function profileScreen({ navigation }) {
+  const [user, setUser] = useRecoilState(userLogged);
+
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.logo} />
@@ -18,8 +22,8 @@ export default function profileScreen({ navigation }) {
       {/* -------------------------------------------- */}
       <View style={styles.container1}>
         <Text style={styles.title}>Tus datos</Text>
-        <Text style={styles.text}>UserName:</Text>
-        <Text style={styles.text}>Email:</Text>
+        <Text style={styles.text}>User name: { user.username}</Text>
+        <Text style={styles.text}>Email: { user.email}</Text>
       </View>
       <View style={styles.container2}>
         <Text style={styles.title}>Tus puntos acumulados</Text>
@@ -27,7 +31,7 @@ export default function profileScreen({ navigation }) {
           <View style={styles.circleBig}>
             <View style={styles.circleSmall}>
               <Text style={styles.points}>
-                {Math.floor(Math.random() * (62 - 17)) + 17}
+                { user.score}
               </Text>
             </View>
           </View>
