@@ -1,27 +1,39 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import firebase from '../firebase/config';
+import {useRecoilState} from 'recoil';
+import {userLogged} from '../recoil/userLogged';
 
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
 
 export default function profileScreen({navigation}) {
+  const [user, setUser] = useRecoilState(userLogged);
+
+  const handleSalir = () => {
+    firebase.auth
+      .signOut()
+      .then(() => {
+        setUser({});
+        console.log('User signed out!');
+      })
+      .catch(error => console.log('error de cerrar sesion'));
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.logo}>
-        <Text style={styles.vc}>VC</Text> App
-      </Text>
+      <Image source={logo} style={styles.logo} />
       <TouchableOpacity style={styles.menu} onPress={() => navigation.goBack()}>
         <Text style={styles.menu}>X</Text>
       </TouchableOpacity>
-      {/*       <Image source={menu} style={styles.menu} /> */}
       <View style={styles.container1}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Podcast')}>
           <Text style={styles.desafios}>Desafíos</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('ProfileUser')}>
           <Text style={styles.perfil}>Mi perfil</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleSalir()}>
           <Text style={styles.sesion}>Cerrar sesión</Text>
         </TouchableOpacity>
       </View>
@@ -38,25 +50,17 @@ const styles = StyleSheet.create({
   },
   logo: {
     position: 'absolute',
+    width: 60,
+    height: 20,
     left: '5%',
-    top: '1%',
-    color: 'white',
-    fontSize: 20,
-  },
-  vc: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    top: '2%',
+    tintColor: 'white',
   },
   menu: {
-    /*     position: 'absolute',
-    right: '5%',
-    top: '1%',
-    backgroundColor: '#27A2FC',
-    tintColor:'white' */
     color: 'white',
     position: 'absolute',
     right: '5%',
-    top: '1%',
+    top: '2%',
     fontSize: 20,
   },
   container1: {
@@ -64,25 +68,26 @@ const styles = StyleSheet.create({
     marginTop: '-25%',
     height: '50%',
     width: '80%',
-   /*  borderColor: 'gray', */
-    /* borderWidth: 1, */
   },
   desafios: {
     fontSize: 25,
     textAlign: 'center',
     marginBottom: '4%',
     color: 'white',
+    fontWeight: 'bold',
   },
   perfil: {
     fontSize: 25,
     textAlign: 'center',
     color: 'white',
+    fontWeight: 'bold',
   },
   sesion: {
     fontSize: 25,
     textAlign: 'center',
     marginTop: '70%',
     color: 'white',
+    fontWeight: 'bold',
   },
 });
 

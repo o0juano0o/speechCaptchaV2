@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -22,8 +22,25 @@ const image = require('../assets/graphy1.png');
 const descarga = require('../assets/cloud-computing.png');
 
 const Upload = ({navigation}) => {
-  const [result, setResult] = React.useState({});
+  const [podcasts, setPodcasts] = React.useState([]);
   const [user, setUser] = useRecoilState(userLogged);
+
+  useEffect(() => {
+    const arr = [];
+    firestore()
+      .collection('podcasts')
+      .where('artistId', '==', user.uid)
+      .get()
+      .then(podcasts => {
+        podcasts.forEach(doc => {
+          //console.log(doc.id, '=>', doc.data());
+          return arr.push(doc.data());
+        });
+        setPodcasts(arr);
+      });
+    console.log(user);
+    console.log(podcasts);
+  }, [user]);
 
   const pickDocument = async () => {
     try {
@@ -43,7 +60,6 @@ const Upload = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.logo} />
-      {/* <Image source={menu} style={styles.menu} /> */}
       {/* ----------------MENU------------------------ */}
       <TouchableOpacity
         onPress={() => navigation.navigate('BlueUser')}
@@ -52,22 +68,16 @@ const Upload = ({navigation}) => {
       </TouchableOpacity>
       {/* -------------------------------------------- */}
       <Text style={styles.title}>Mis podcasts</Text>
+      {podcasts?.map(podcast => {
+        return (
+          <View style={styles.podcast} key={podcast.url}>
+            <Text style={styles.text}>{podcast.tittle}</Text>
+            <Text style={styles.text1}>Voicers: {podcast.voicers}</Text>
+            <Image source={descarga} style={styles.descarga} />
+          </View>
+        );
+      })}
 
-      <View style={styles.podcast}>
-        <Text style={styles.text}>Titulo de podcast</Text>
-        <Text style={styles.text1}>93 voicers</Text>
-        <Image source={descarga} style={styles.descarga} />
-      </View>
-      <View style={styles.podcast}>
-        <Text style={styles.text}>Titulo de podcast</Text>
-        <Text style={styles.text1}>86 voicers</Text>
-        <Image source={descarga} style={styles.descarga} />
-      </View>
-      <View style={styles.podcast}>
-        <Text style={styles.text}>Titulo de podcast</Text>
-        <Text style={styles.text1}>73 voicers</Text>
-        <Image source={descarga} style={styles.descarga} />
-      </View>
       <TouchableOpacity
         style={styles.button}
         onPress={async () => {
@@ -81,7 +91,7 @@ const Upload = ({navigation}) => {
             const audioUrl = await audioStorage.getDownloadURL();
             const transcription = await getTranscription(audioFile);
             podcastsCollection.add({
-              artist: user,
+              artistId: user.uid,
               tittle: audio.name,
               transcription: transcription,
               url: audioUrl,
@@ -105,15 +115,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    position: 'relative',
-    fontSize: 25,
-    width: '45%',
+    fontSize: 30,
     top: '10%',
-    opacity: 0.8,
-    color: 'gray',
+    color: '#5b5d68',
     fontWeight: 'bold',
-    justifyContent: 'center',
     marginBottom: '25%',
+     textAlign: 'center',
   },
   text: {
     top: '-15%',

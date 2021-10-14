@@ -5,13 +5,17 @@ const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
 const image = require('../assets/graphy1.png');
 
-export default function profileScreen() {
+export default function profileScreen({navigation}) {
   return (
     <View style={styles.container}>
-      <Text style={styles.logo}>
-        <Text style={styles.vc}>VC</Text> App
-      </Text>
-      <Image source={menu} style={styles.menu} />
+      <Image source={logo} style={styles.logo} />
+      {/* ----------------MENU------------------------ */}
+      <TouchableOpacity
+        onPress={() => navigation.navigate('BlueUser')}
+        style={styles.menu}>
+        <Image source={menu} />
+      </TouchableOpacity>
+      {/* -------------------------------------------- */}
       <View style={styles.container1}>
         <Text style={styles.title}>Tus datos</Text>
         <Text style={styles.text}>UserName:</Text>
@@ -43,21 +47,15 @@ const styles = StyleSheet.create({
   },
   logo: {
     position: 'absolute',
+    width: 60,
+    height: 20,
     left: '5%',
-    top: '1%',
-    fontSize: 20,
-    color: 'black',
-  },
-  vc: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#27A2FC',
+    top: '2%',
   },
   menu: {
     position: 'absolute',
     right: '5%',
-    top: '1%',
-    backgroundColor: 'white',
+    top: '2%',
   },
   container1: {
     backgroundColor: 'white',
@@ -70,12 +68,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: '5%',
     fontWeight: 'bold',
-    color: 'black',
+    color: '#5b5d68',
   },
   text: {
     fontSize: 20,
     marginBottom: '5%',
-    color: 'black',
+    color: '#5b5d68',
   },
   container2: {
     backgroundColor: 'white',
@@ -86,27 +84,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   shadow: {
-    marginTop: '2%',
-    width: 190,
-    height: 190,
+    marginTop: '5%',
+    width: '63%',
+    height: '45%',
     backgroundColor: '#BCE3FD',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 105,
+    borderRadius: 125,
   },
   circleBig: {
-    width: 170,
-    height: 170,
+    width: '90%',
+    height: '90%',
     backgroundColor: '#27A2FC',
-    borderRadius: 105,
+    borderRadius: 125,
     justifyContent: 'center',
     alignItems: 'center',
   },
   circleSmall: {
-    width: 130,
-    height: 130,
+    width: '70%',
+    height: '70%',
     backgroundColor: '#ffff',
-    borderRadius: 105,
+    borderRadius: 125,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -118,7 +116,6 @@ const styles = StyleSheet.create({
   image: {
     position: 'relative',
     left: '16%',
-    marginBottom: '-39%',
-    top: '6%',
+    marginBottom: '-47%',
   },
 });

@@ -17,8 +17,14 @@ export default function ResultScreen({navigation}) {
   return (
     <>
       <View style={styles.container}>
-        <Image source={logo} style={styles.logo} />
-        <Image source={menu} style={styles.menu} />
+      <Image source={logo} style={styles.logo} />
+      {/* ----------------MENU------------------------ */}
+      <TouchableOpacity
+        onPress={() => navigation.navigate('BlueUser')}
+        style={styles.menu}>
+        <Image source={menu} />
+      </TouchableOpacity>
+      {/* -------------------------------------------- */}
         <Text style={styles.titulo}>Felicitaciones!</Text>
         <View style={styles.shadow}>
           <View style={styles.circleBig}>
@@ -67,18 +73,18 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 60,
     height: 20,
-    left: 10,
-    top: 15,
+    left: '5%',
+    top: '2%',
   },
   menu: {
     position: 'absolute',
-    right: 10,
-    top: 15,
+    right: '5%',
+    top: '2%',
   },
   image: {
     position: 'relative',
     left: '10%',
-    top: '4%',
+    top: '3%',
   },
   //REPRODUCIENDO
   shadow: {
