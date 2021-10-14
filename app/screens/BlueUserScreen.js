@@ -1,11 +1,13 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import firebase from '../firebase/config';
+import {useRecoilState} from 'recoil';
+import {userLogged} from '../recoil/userLogged';
 
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
 
-export default function profileScreen({ navigation }) {
+export default function profileScreen({navigation}) {
   const [user, setUser] = useRecoilState(userLogged);
 
   const handleSalir = () => {
@@ -52,7 +54,7 @@ const styles = StyleSheet.create({
     height: 20,
     left: '5%',
     top: '2%',
-    tintColor:'white'
+    tintColor: 'white',
   },
   menu: {
     color: 'white',
