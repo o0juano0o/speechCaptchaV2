@@ -8,15 +8,34 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-// import * as firebase from '@react-native-firebase/app';
-// import storage from '@react-native-firebase/storage';
-
+import * as firebase from '@react-native-firebase/app';
+import storage from '@react-native-firebase/storage';
+import firestore from '@react-native-firebase/firestore';
+import DocumentPicker from 'react-native-document-picker';
+import RNFetchBlob from 'rn-fetch-blob';
+import RNFS from 'react-native-fs';
+import {getTranscription} from '../utils/transcription';
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
 const image = require('../assets/graphy1.png');
 const descarga = require('../assets/cloud-computing.png');
 const Upload = () => {
   const [result, setResult] = React.useState([]);
+
+  const pickDocument = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.audio],
+      });
+      return res[0];
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User cancelled the picker, exit any dialogs or menus and move on
+      } else {
+        throw err;
+      }
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -42,10 +61,30 @@ const Upload = () => {
       <TouchableOpacity
         style={styles.button}
         onPress={async () => {
-          console.log('funciona');
-          const res = await fetch('http://10.0.2.2:3001/api/transcription');
-          const data = await res.json();
-          console.log(data);
+          const audio = await pickDocument();
+          //console.log('este audio', audio.uri);
+
+          const reference = storage().ref(`audios/${audio.name}`);
+
+          RNFetchBlob.fs
+            .stat(audio.uri)
+            .then(async stats => {
+              console.log(stats.path);
+              reference
+                .putFile(stats.path)
+                .then(res => console.log(res))
+                .catch(err => console.log(err));
+
+              const exportedFileContent = await RNFS.readFile(
+                audio.uri,
+                'base64',
+              );
+              const transcription = await getTranscription(exportedFileContent);
+            })
+            .catch(err => {});
+
+          // const exportedFileContent = await RNFS.readFile(audio.uri, 'base64');
+          // getTranscription(exportedFileContent);
         }}>
         <Text style={styles.text2}>Crear nuevo podcast</Text>
       </TouchableOpacity>

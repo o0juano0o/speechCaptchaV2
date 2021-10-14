@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import {useRecoilState} from 'recoil';
 import {
   StyleSheet,
   Text,
@@ -16,10 +17,41 @@ const menu = require('../assets/menu.png');
 const aceptar = require('../assets/aceptar.png');
 const cancelar = require('../assets/cancelar.png');
 
+import TrackPlayer, {State, usePlaybackState} from 'react-native-track-player';
+
+const setupPlayer = async podcast => {
+  await TrackPlayer.setupPlayer();
+  await TrackPlayer.destroy();
+  await TrackPlayer.add(podcast);
+};
+
+import {selectedPodcast} from '../recoil/selectedPodcast';
+
+const playTrack = async (playbackState, podcast) => {
+  const currentTrack = await TrackPlayer.getCurrentTrack();
+
+  if (currentTrack !== null) {
+    if (playbackState === State.Paused) {
+      await TrackPlayer.play();
+    } else {
+      await TrackPlayer.reset();
+    }
+  }
+
+  await TrackPlayer.add(podcast);
+};
+
 export default function ValidationScreen({navigation}) {
+  const [podcast, setPodcast] = useRecoilState(selectedPodcast);
   const [playing, setPlaying] = useState(false);
+  const playbackState = usePlaybackState();
+
+  useEffect(() => {
+    if (podcast.url) setupPlayer([podcast]);
+  }, [podcast]);
 
   const handlePlay = () => {
+    playTrack(playbackState, [podcast]);
     if (playing) {
       setPlaying(false);
     } else {
