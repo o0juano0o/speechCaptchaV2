@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
   image: {
     position: 'relative',
     left: '10%',
+    top: '4%',
   },
   //REPRODUCIENDO
   shadow: {

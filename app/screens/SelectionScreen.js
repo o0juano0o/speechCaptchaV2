@@ -5,15 +5,7 @@ import {StyleSheet, Text, View, Button} from 'react-native';
 import firebase from '../firebase/config';
 import {userLogged} from '../recoil/userLogged';
 
-import TrackPlayer, {
-  Capability,
-  Event,
-  RepeatMode,
-  State,
-  usePlaybackState,
-  useProgress,
-  useTrackPlayerEvents,
-} from 'react-native-track-player';
+import TrackPlayer, {State, usePlaybackState} from 'react-native-track-player';
 
 const songs = [
   {

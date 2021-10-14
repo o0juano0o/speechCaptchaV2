@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 
 import firebase from '../firebase/config';
@@ -35,13 +36,13 @@ const Login = ({navigation}) => {
     firebase.auth
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        console.log('User logged in successfully');
         const {uid} = firebase.auth.currentUser;
         setUser({uid: uid});
-        navigation.navigate('Home');
+        Alert.alert('User logged in successfully');
+        navigation.navigate('Podcast');
       })
       .catch(error => {
-        alert(error.message);
+        Alert.alert('No se pudo iniciar sesion');
       });
     setInput({
       email: '',
@@ -77,11 +78,11 @@ const Login = ({navigation}) => {
           <TouchableOpacity style={styles.touch} onPress={() => handleLoggin()}>
             <Text style={styles.touchText}>Continuar</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.touch}
             onPress={() => console.log(user)}>
             <Text style={styles.touchText}>ver estado</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </View>

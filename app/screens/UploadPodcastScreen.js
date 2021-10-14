@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   image: {
     position: 'relative',
     left: '10%',
-    top: '-1%',
+    top: '2%',
   },
   logo: {
     position: 'absolute',
