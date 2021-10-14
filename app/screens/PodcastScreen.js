@@ -1,4 +1,5 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
+import {useRecoilState} from 'recoil';
 import {
   StyleSheet,
   Text,
@@ -8,26 +9,56 @@ import {
   Dimensions,
   ImageBackground,
 } from 'react-native';
+import firebase from '../firebase/config';
+import Carousel from 'react-native-anchor-carousel';
+
 const IconPlay = require('../assets/play.png');
 const image = require('../assets/graphy1.png');
 const icon = require('../assets/icon.png');
-import Carousel from 'react-native-anchor-carousel';
 
 const INITIAL_INDEX = 0;
+
+// RECOIL
+import {selectedPodcast} from '../recoil/selectedPodcast';
+
+// COMPONENT
 export default function App({navigation}) {
-  const podcast = [
-    {id: 1, title: 'Manaos de uva nuestro secreto'},
-    {id: 2, title: 'Khabib historial de peleas'},
-    {id: 3, title: 'Charla con infante de la segunda guerra mundial'},
-  ];
+  const [podcasts, setPodcasts] = useState([]);
+  const [podcast, setPodcast] = useRecoilState(selectedPodcast);
   const carouselRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(INITIAL_INDEX);
   function handleCarouselScrollEnd(item, index) {
     setCurrentIndex(index);
   }
 
+  useEffect(() => {
+    const storageRef = firebase.storage.ref();
+    const audiosRef = storageRef.child('audios');
+    audiosRef
+      .listAll()
+      .then(res => {
+        let arrAudios = [];
+        res.items.forEach(item => {
+          let audioRef = storageRef.child(item.path);
+          audioRef.getDownloadURL().then(res => {
+            arrAudios.push({title: item.name.slice(0, -4), url: res});
+            setPodcasts(arrAudios);
+          });
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    console.log(podcast);
+  }, []);
+
+  const handleSelect = podcast => {
+    setPodcast(podcast);
+    navigation.navigate('Validation');
+  };
+
   function renderItem({item, index}) {
-    const {uri, title, content} = item;
+    const {uri, title, url} = item;
     return (
       <TouchableOpacity
         activeOpacity={1}
@@ -44,8 +75,12 @@ export default function App({navigation}) {
           <View style={styles.shadow}>
             <View style={styles.circleBig}>
               <View style={styles.circleSmall}>
-                <Image source={IconPlay} style={styles.play}></Image>
-                <Text>Tap to play</Text>
+                <TouchableOpacity
+                  style={styles.playBtn}
+                  onPress={() => handleSelect({title: title, url: url})}>
+                  <Image source={IconPlay} style={styles.play}></Image>
+                  <Text>Tap to play</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -75,11 +110,8 @@ export default function App({navigation}) {
       <View style={styles.container}>
         <Carousel
           style={styles.carousel}
-          data={podcast}
+          data={podcasts}
           renderItem={renderItem}
-          /*           itemWidth={300}
-          inActiveOpacity={0.3}
-          containerWidth={450} */
           onScrollEnd={handleCarouselScrollEnd}
           ref={carouselRef}
         />
@@ -91,6 +123,9 @@ export default function App({navigation}) {
 }
 
 const styles = StyleSheet.create({
+  playBtn: {
+    alignItems: 'center',
+  },
   topIcon: {marginLeft: 220},
   vc: {
     color: '#21A1FC',
@@ -108,7 +143,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   conteinerCircle: {
-    /* flex: 1, */
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 80,
@@ -145,43 +179,15 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   container: {
-    /*  position: "relative", marginLeft: 40  */
     justifyContent: 'center',
     alignItems: 'center',
   },
-  carousel: {
-    /* backgroundColor: "#141518", */
-    /*      aspectRatio: 1.5,
-    flexGrow: 0,
-    marginBottom: 20, */
-  },
-  item: {
-    /*  borderWidth: 2, */
-    /*  backgroundColor: "white", */
-    /*     flex: 1,
-    borderRadius: 5,
-    borderColor: "white",
-    justifyContent: "center",
-    alignItems: "center", */
-    /* elevation: 3, */
-  },
-  imageBackground: {
-    /* flex: 2, */
-    /* backgroundColor: "#EBEBEB", */
-    /*    borderWidth: 5,
-    borderColor: "white", */
-  },
-  lowerContainer: {
-    /*     flex: 1,
-    margin: 10, */
-  },
+  carousel: {},
+  item: {},
+  imageBackground: {},
+  lowerContainer: {},
   titleText: {
     marginTop: 30,
-    /* fontWeight: "bold", */
-    /*  fontSize: 18, */
   },
-  contentText: {
-    /*     marginTop: 10,
-    fontSize: 12, */
-  },
+  contentText: {},
 });

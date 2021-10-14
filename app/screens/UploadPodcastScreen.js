@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import * as firebase from '@react-native-firebase/app';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import DocumentPicker from 'react-native-document-picker';
@@ -137,7 +136,7 @@ const styles = StyleSheet.create({
   image: {
     position: 'relative',
     left: '10%',
-    top: '-1%',
+    top: '2%',
   },
   logo: {
     position: 'absolute',

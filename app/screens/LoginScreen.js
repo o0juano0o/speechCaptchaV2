@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -37,13 +38,13 @@ const Login = ({navigation}) => {
     firebase.auth
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        console.log('User logged in successfully');
         const {uid} = firebase.auth.currentUser;
         setUser({uid: uid});
-        navigation.navigate('Home');
+        Alert.alert('User logged in successfully');
+        navigation.navigate('Podcast');
       })
       .catch(error => {
-        alert(error.message);
+        Alert.alert('No se pudo iniciar sesion');
       });
     setInput({
       email: '',
@@ -52,6 +53,7 @@ const Login = ({navigation}) => {
   };
 
   return (
+
     <KeyboardAwareScrollView style={{flex: 1}}>
       <View style={styles.container}>
         <Image source={logo} style={styles.logo} />
@@ -95,6 +97,7 @@ const Login = ({navigation}) => {
               <Text style={styles.touchText}>ver estado</Text>
             </TouchableOpacity>
           </View>
+
         </View>
       </View>
     </KeyboardAwareScrollView>
