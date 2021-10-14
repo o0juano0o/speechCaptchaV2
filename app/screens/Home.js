@@ -38,7 +38,7 @@ const Home = ({navigation}) => {
       </View>
       <View style={styles.logging}>
         <Text style={styles.loginText}>Iniciá sesion</Text>
-        <Link style={styles.link} to={{screen: 'Loggin'}}>
+        <Link style={styles.link} to={{screen: 'Login'}}>
           acá
         </Link>
       </View>

@@ -27,9 +27,9 @@ export default function profileScreen() {
               </Text>
             </View>
           </View>
-              </View>
-              <Image source={image} style={styles.image}></Image>
-          </View>
+        </View>
+        <Image source={image} style={styles.image}></Image>
+      </View>
     </View>
   );
 }
@@ -81,9 +81,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginBottom: '-105%',
     height: '60%',
-      width: '80%',
-      alignItems: 'center',
-    justifyContent:'center'
+    width: '80%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   shadow: {
     marginTop: '2%',
@@ -114,10 +114,11 @@ const styles = StyleSheet.create({
     fontSize: 50,
     fontWeight: 'bold',
     color: '#27A2FC',
-    },
-    image: {
-        position: 'relative',
-        left: '16%',
-        marginBottom:"-39%"
-      },
+  },
+  image: {
+    position: 'relative',
+    left: '16%',
+    marginBottom: '-39%',
+    top: '6%',
+  },
 });
