@@ -14,7 +14,7 @@ const icon = require('../assets/icon.png');
 import Carousel from 'react-native-anchor-carousel';
 
 const INITIAL_INDEX = 0;
-export default function App() {
+export default function App({navigation}) {
   const podcast = [
     {id: 1, title: 'Manaos de uva nuestro secreto'},
     {id: 2, title: 'Khabib historial de peleas'},
@@ -59,7 +59,14 @@ export default function App() {
       <View style={styles.vcApp}>
         <Text style={styles.vc}>VC </Text>
         <Text>App</Text>
-        <Image source={icon} style={styles.topIcon} />
+        {/* <Image source={icon} style={styles.topIcon} /> */}
+        {/* ----------------MENU------------------------ */}
+        <TouchableOpacity
+          onPress={() => navigation.navigate('BlueUser')}
+          style={styles.topIcon}>
+          <Image source={icon} />
+        </TouchableOpacity>
+        {/* -------------------------------------------- */}
       </View>
       <View style={styles.title}>
         <Text>Reproducir Captcha</Text>

@@ -28,6 +28,8 @@ const transcription = async (audio) => {
   const prueba3 = prueba2.replace(/ /g, "+");
   const buffer = await Buffer.from(prueba3, "base64");
 
+  console.log(buffer);
+
   // if (result.sampleRate < desiredSampleRate) {
   //   console.error(
   //     "Warning: original sample rate (" +

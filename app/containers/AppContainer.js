@@ -19,6 +19,7 @@ import BlueArtistScreen from '../screens/BlueArtistScreen';
 import PresentationScreen from '../screens/PresentationScreen';
 import ProfileUserScreen from '../screens/ProfileUserScreen';
 import ProfileArtistScreen from '../screens/ProfileArtistScreen';
+import TotalPoints from '../screens/TotalPoints';
 
 import firebase from '../firebase/config';
 import {userLogged} from '../recoil/userLogged';
@@ -56,6 +57,7 @@ const AppContainer = () => {
         <Stack.Screen name="Presentation" component={PresentationScreen} />
         <Stack.Screen name="ProfileUser" component={ProfileUserScreen} />
         <Stack.Screen name="ProfileArtist" component={ProfileArtistScreen} />
+        <Stack.Screen name="TotalPoints" component={TotalPoints} />
       </Stack.Navigator>
     </NavigationContainer>
   );
