@@ -19,8 +19,10 @@ import BlueArtistScreen from '../screens/BlueArtistScreen';
 import PresentationScreen from '../screens/PresentationScreen';
 import ProfileUserScreen from '../screens/ProfileUserScreen';
 import ProfileArtistScreen from '../screens/ProfileArtistScreen';
+import TotalPoints from '../screens/TotalPoints';
 
 import firebase from '../firebase/config';
+import firestore from '@react-native-firebase/firestore';
 import {userLogged} from '../recoil/userLogged';
 
 const AppContainer = () => {
@@ -31,8 +33,21 @@ const AppContainer = () => {
     const current = firebase.auth.currentUser;
     if (current !== null) {
       const {uid} = firebase.auth.currentUser;
-      setUser({uid: uid});
+      firestore()
+        .collection('users')
+        .doc(uid)
+        .get()
+        .then(userInfo => {
+          setUser({
+            uid: uid,
+            username: userInfo._data.username,
+            email: userInfo._data.email,
+            isArtist: userInfo._data.isArtist,
+            score: userInfo._data.score,
+          });
+        });
     }
+    console.log(user);
   }, []);
 
   return (
@@ -56,6 +71,7 @@ const AppContainer = () => {
         <Stack.Screen name="Presentation" component={PresentationScreen} />
         <Stack.Screen name="ProfileUser" component={ProfileUserScreen} />
         <Stack.Screen name="ProfileArtist" component={ProfileArtistScreen} />
+        <Stack.Screen name="TotalPoints" component={TotalPoints} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -45,7 +45,7 @@ const Register = ({navigation}) => {
           .doc(cred.user.uid)
           .set({
             email: email,
-            usename: username,
+            username: username,
             score: 0,
             isArtist: false,
           })
@@ -71,7 +71,14 @@ const Register = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.logo} />
-      <Image source={menu} style={styles.menu} />
+      {/* <Image source={menu} style={styles.menu} /> */}
+      {/* ----------------MENU------------------------ */}
+      <TouchableOpacity
+        onPress={() => navigation.navigate('BlueUser')}
+        style={styles.menu}>
+        <Image source={menu} />
+      </TouchableOpacity>
+      {/* -------------------------------------------- */}
       {/* --------------------FORMULARIO-------------------------- */}
       <View style={styles.caja}>
         <View style={styles.title}>

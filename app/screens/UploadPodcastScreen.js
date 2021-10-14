@@ -8,19 +8,22 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import * as firebase from '@react-native-firebase/app';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import DocumentPicker from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import RNFS from 'react-native-fs';
+import {useRecoilState} from 'recoil';
 import {getTranscription} from '../utils/transcription';
+import {userLogged} from '../recoil/userLogged';
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
 const image = require('../assets/graphy1.png');
 const descarga = require('../assets/cloud-computing.png');
-const Upload = () => {
-  const [result, setResult] = React.useState([]);
+
+const Upload = ({navigation}) => {
+  const [result, setResult] = React.useState({});
+  const [user, setUser] = useRecoilState(userLogged);
 
   const pickDocument = async () => {
     try {
@@ -40,7 +43,14 @@ const Upload = () => {
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.logo} />
-      <Image source={menu} style={styles.menu} />
+      {/* <Image source={menu} style={styles.menu} /> */}
+      {/* ----------------MENU------------------------ */}
+      <TouchableOpacity
+        onPress={() => navigation.navigate('BlueUser')}
+        style={styles.menu}>
+        <Image source={menu} />
+      </TouchableOpacity>
+      {/* -------------------------------------------- */}
       <Text style={styles.title}>Mis podcasts</Text>
 
       <View style={styles.podcast}>
@@ -61,30 +71,25 @@ const Upload = () => {
       <TouchableOpacity
         style={styles.button}
         onPress={async () => {
-          const audio = await pickDocument();
-          //console.log('este audio', audio.uri);
-
-          const reference = storage().ref(`audios/${audio.name}`);
-
-          RNFetchBlob.fs
-            .stat(audio.uri)
-            .then(async stats => {
-              console.log(stats.path);
-              reference
-                .putFile(stats.path)
-                .then(res => console.log(res))
-                .catch(err => console.log(err));
-
-              const exportedFileContent = await RNFS.readFile(
-                audio.uri,
-                'base64',
-              );
-              const transcription = await getTranscription(exportedFileContent);
-            })
-            .catch(err => {});
-
-          // const exportedFileContent = await RNFS.readFile(audio.uri, 'base64');
-          // getTranscription(exportedFileContent);
+          try {
+            const audio = await pickDocument();
+            const audioPath = (await RNFetchBlob.fs.stat(audio.uri)).path;
+            const audioFile = await RNFS.readFile(audio.uri, 'base64');
+            const audioStorage = await storage().ref(`audios/${audio.name}`);
+            const podcastsCollection = await firestore().collection('podcasts');
+            await audioStorage.putFile(audioPath);
+            const audioUrl = await audioStorage.getDownloadURL();
+            const transcription = await getTranscription(audioFile);
+            podcastsCollection.add({
+              artist: user,
+              tittle: audio.name,
+              transcription: transcription,
+              url: audioUrl,
+              voicers: 0,
+            });
+          } catch (error) {
+            console.log(error);
+          }
         }}>
         <Text style={styles.text2}>Crear nuevo podcast</Text>
       </TouchableOpacity>

@@ -94,7 +94,14 @@ export default function App({navigation}) {
       <View style={styles.vcApp}>
         <Text style={styles.vc}>VC </Text>
         <Text>App</Text>
-        <Image source={icon} style={styles.topIcon} />
+        {/* <Image source={icon} style={styles.topIcon} /> */}
+        {/* ----------------MENU------------------------ */}
+        <TouchableOpacity
+          onPress={() => navigation.navigate('BlueUser')}
+          style={styles.topIcon}>
+          <Image source={icon} />
+        </TouchableOpacity>
+        {/* -------------------------------------------- */}
       </View>
       <View style={styles.title}>
         <Text>Reproducir Captcha</Text>
