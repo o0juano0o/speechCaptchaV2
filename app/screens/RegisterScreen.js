@@ -45,7 +45,7 @@ const Register = ({navigation}) => {
           .doc(cred.user.uid)
           .set({
             email: email,
-            usename: username,
+            username: username,
             score: 0,
             isArtist: false,
           })
