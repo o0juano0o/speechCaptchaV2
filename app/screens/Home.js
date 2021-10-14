@@ -38,7 +38,7 @@ const Home = ({navigation}) => {
       </View>
       <View style={styles.logging}>
         <Text style={styles.loginText}>Iniciá sesion</Text>
-        <Link style={styles.link} to={{screen: 'Loggin'}}>
+        <Link style={styles.link} to={{screen: 'Login'}}>
           acá
         </Link>
       </View>
@@ -56,13 +56,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 60,
     height: 20,
-    left: 10,
-    top: 15,
+    left: '5%',
+    top: '2%',
   },
   menu: {
     position: 'absolute',
-    right: 10,
-    top: 15,
+    right: '5%',
+    top: '2%',
   },
   titulo: {
     color: '#5b5d68',

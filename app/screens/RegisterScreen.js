@@ -149,13 +149,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 60,
     height: 20,
-    left: 10,
-    top: 15,
+    left: '5%',
+    top: '2%',
   },
   menu: {
     position: 'absolute',
-    right: 10,
-    top: 15,
+    right: '5%',
+    top: '2%',
   },
   container: {
     flex: 1,

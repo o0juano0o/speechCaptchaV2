@@ -5,13 +5,17 @@ const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
 const image = require('../assets/graphy1.png');
 
-export default function profileScreen() {
+export default function profileScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.logo}>
-        <Text style={styles.vc}>VC</Text> App
-      </Text>
-      <Image source={menu} style={styles.menu} />
+      <Image source={logo} style={styles.logo} />
+      {/* ----------------MENU------------------------ */}
+      <TouchableOpacity
+        onPress={() => navigation.navigate('BlueUser')}
+        style={styles.menu}>
+        <Image source={menu} />
+      </TouchableOpacity>
+      {/* -------------------------------------------- */}
       <View style={styles.container1}>
         <Text style={styles.title}>Tus datos</Text>
         <Text style={styles.text}>UserName:</Text>
@@ -34,21 +38,15 @@ const styles = StyleSheet.create({
   },
   logo: {
     position: 'absolute',
+    width: 60,
+    height: 20,
     left: '5%',
-    top: '1%',
-    fontSize: 20,
-    color: 'black',
-  },
-  vc: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#27A2FC',
+    top: '2%',
   },
   menu: {
     position: 'absolute',
     right: '5%',
-    top: '1%',
-    backgroundColor: 'white',
+    top: '2%',
   },
   container1: {
     backgroundColor: 'white',
@@ -61,12 +59,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: '5%',
     fontWeight: 'bold',
-    color: 'black',
+    color: '#5b5d68',
   },
   text: {
     fontSize: 20,
     marginBottom: '5%',
-    color: 'black',
+    color: '#5b5d68',
   },
   container2: {
     marginBottom: '-105%',
@@ -79,6 +77,6 @@ const styles = StyleSheet.create({
   image: {
     position: 'relative',
     left: '16%',
-    marginBottom: '-117%',
+    marginBottom: '-130%',
   },
 });
