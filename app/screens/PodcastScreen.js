@@ -11,9 +11,8 @@ import {
 } from 'react-native';
 import firebase from '../firebase/config';
 import Carousel from 'react-native-anchor-carousel';
+import firestore from '@react-native-firebase/firestore';
 import {isArtist} from '../recoil/isArtist';
-
-
 
 const IconPlay = require('../assets/play.png');
 const image = require('../assets/graphy1.png');
@@ -31,29 +30,43 @@ export default function App({navigation}) {
   const [podcast, setPodcast] = useRecoilState(selectedPodcast);
   const carouselRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(INITIAL_INDEX);
-  const [artist, setArtist] = useRecoilState(isArtist)
+  const [artist, setArtist] = useRecoilState(isArtist);
   function handleCarouselScrollEnd(item, index) {
     setCurrentIndex(index);
   }
 
   useEffect(() => {
-    const storageRef = firebase.storage.ref();
-    const audiosRef = storageRef.child('audios');
-    audiosRef
-      .listAll()
-      .then(res => {
-        let arrAudios = [];
-        res.items.forEach(item => {
-          let audioRef = storageRef.child(item.path);
-          audioRef.getDownloadURL().then(res => {
-            arrAudios.push({title: item.name.slice(0, -4), url: res});
-            setPodcasts(arrAudios);
-          });
+    const arr = [];
+    firestore()
+      .collection('podcasts')
+      .get()
+      .then(data => {
+        data.forEach(doc => {
+          const result = {...doc.data(), doc: doc.id};
+          return arr.push(result);
         });
+        setPodcasts(arr);
+        // console.log(podcasts);
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err => console.error(err));
+    // const storageRef = firebase.storage.ref();
+    // const audiosRef = storageRef.child('audios');
+    // audiosRef
+    //   .listAll()
+    //   .then(res => {
+    //     let arrAudios = [];
+    //     res.items.forEach(item => {
+    //       let audioRef = storageRef.child(item.path);
+    //       audioRef.getDownloadURL().then(res => {
+    //         arrAudios.push({title: item.name.slice(0, -4), url: res});
+    //         setPodcasts(arrAudios);
+    //       });
+    //     });
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
+    // console.log(podcasts);
   }, []);
 
   const handleSelect = podcast => {
@@ -62,7 +75,7 @@ export default function App({navigation}) {
   };
 
   function renderItem({item, index}) {
-    const {uri, title, url} = item;
+    const {uri, tittle, url} = item;
     return (
       <TouchableOpacity
         activeOpacity={1}
@@ -81,21 +94,23 @@ export default function App({navigation}) {
               <View style={styles.circleSmall}>
                 <TouchableOpacity
                   style={styles.playBtn}
-                  onPress={() => handleSelect({title: title, url: url})}>
+                  onPress={() => {
+                    handleSelect(item);
+                  }}>
                   <Image source={IconPlay} style={styles.play}></Image>
                   <Text>Tap to play</Text>
                 </TouchableOpacity>
               </View>
             </View>
           </View>
-          <Text style={styles.titleText}>{title}</Text>
+          <Text style={styles.titleText}>{tittle}</Text>
         </View>
       </TouchableOpacity>
     );
   }
 
   const handleClick = () => {
-  artist
+    artist
       ? navigation.navigate('BlueArtist')
       : navigation.navigate('BlueUser');
   };

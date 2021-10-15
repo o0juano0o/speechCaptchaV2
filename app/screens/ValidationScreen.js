@@ -7,7 +7,9 @@ import {
   Image,
   TouchableOpacity,
   ImageBackground,
+  Alert,
 } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
 import {isArtist} from '../recoil/isArtist';
 
 const image = require('../assets/graphy1.png');
@@ -33,7 +35,8 @@ const setupPlayer = async podcast => {
 };
 
 import {selectedPodcast} from '../recoil/selectedPodcast';
-
+import {newScore} from '../recoil/newScore';
+import {userLogged} from '../recoil/userLogged';
 const playTrack = async (playbackState, podcast) => {
   const currentTrack = await TrackPlayer.getCurrentTrack();
 
@@ -51,11 +54,17 @@ const playTrack = async (playbackState, podcast) => {
 export default function ValidationScreen({navigation}) {
   const [podcast, setPodcast] = useRecoilState(selectedPodcast);
   const [playing, setPlaying] = useState(false);
+  const [transcription, setTrascription] = useState('');
+  const [score, setScore] = useRecoilState(newScore);
+  const [user, setUser] = useRecoilState(userLogged);
   const playbackState = usePlaybackState();
-  const [artist, setArtist] = useRecoilState(isArtist)
+  const [artist, setArtist] = useRecoilState(isArtist);
 
   useEffect(() => {
-    if (podcast.url) setupPlayer([podcast]);
+    if (podcast.url) {
+      setupPlayer([podcast]);
+      setTrascription(podcast.transcription);
+    }
   }, [podcast]);
 
   const handlePlay = () => {
@@ -67,9 +76,24 @@ export default function ValidationScreen({navigation}) {
     }
   };
 
+  const handleCorrect = () => {
+    console.log('apretado');
+    const points = transcription.length * 2;
+    setScore(points);
+    firestore()
+      .collection('users')
+      .doc(user.uid)
+      .update({score: user.score + points});
+    // setUser({...user, score: user.score + newScore});
+    Alert.alert('Transcripción validada.');
+
+    navigation.navigate('Result');
+  };
   const handleClick = () => {
-    artist?navigation.navigate('BlueArtist'):navigation.navigate('BlueUser')
-  }
+    artist
+      ? navigation.navigate('BlueArtist')
+      : navigation.navigate('BlueUser');
+  };
 
   return (
     <>
@@ -77,9 +101,7 @@ export default function ValidationScreen({navigation}) {
         <Image source={logo} style={styles.logo} />
         {/* <Image source={menu} style={styles.menu} /> */}
         {/* ----------------MENU------------------------ */}
-        <TouchableOpacity
-          onPress={() => handleClick()}
-          style={styles.menu}>
+        <TouchableOpacity onPress={() => handleClick()} style={styles.menu}>
           <Image source={menu} />
         </TouchableOpacity>
         {/* -------------------------------------------- */}
@@ -101,7 +123,7 @@ export default function ValidationScreen({navigation}) {
         ) : (
           <Text style={styles.reproduciendo}>Reproducir</Text>
         )}
-        <Text style={styles.traduccion}>Hoy comí una manzana de desayuno</Text>
+        <Text style={styles.traduccion}>{transcription}</Text>
         <Text style={styles.coincide}>Coincide cada palabra?</Text>
         <View style={styles.buttons}>
           <ImageBackground
@@ -113,9 +135,7 @@ export default function ValidationScreen({navigation}) {
               onPress={() => navigation.navigate('Transcription')}>
               <Image source={cancelar} style={styles.btn} />
             </TouchableOpacity>
-            <TouchableOpacity
-              title="SI"
-              onPress={() => navigation.navigate('Result')}>
+            <TouchableOpacity title="SI" onPress={() => handleCorrect()}>
               <Image source={aceptar} style={styles.btn} />
             </TouchableOpacity>
           </ImageBackground>
@@ -153,7 +173,7 @@ const styles = StyleSheet.create({
   },
   image: {
     position: 'relative',
-    top: '10%',
+    top: '15%',
     width: '100%',
     height: '100%',
     display: 'flex',

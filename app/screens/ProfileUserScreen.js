@@ -1,7 +1,7 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {useRecoilState} from 'recoil';
-import { userLogged } from '../recoil/userLogged';
+import {userLogged} from '../recoil/userLogged';
 import {isArtist} from '../recoil/isArtist';
 import firebase from '../firebase/config';
 import firestore from '@react-native-firebase/firestore';
@@ -12,8 +12,13 @@ const image = require('../assets/graphy1.png');
 
 export default function profileScreen({navigation}) {
   const [user, setUser] = useRecoilState(userLogged);
-  const [artist, setArtist] = useRecoilState(isArtist)
-  
+  const [artist, setArtist] = useRecoilState(isArtist);
+  const [totalPoints, setTotalPoints] = useState(0);
+
+  useEffect(() => {
+    setTotalPoints(user.score);
+  }, [user]);
+
   useEffect(() => {
     const current = firebase.auth.currentUser;
     if (current !== null) {
@@ -35,16 +40,16 @@ export default function profileScreen({navigation}) {
   }, []);
 
   const handleClick = () => {
-    artist?navigation.navigate('BlueArtist'):navigation.navigate('BlueUser')
-  }
+    artist
+      ? navigation.navigate('BlueArtist')
+      : navigation.navigate('BlueUser');
+  };
 
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.logo} />
       {/* ----------------MENU------------------------ */}
-      <TouchableOpacity
-        onPress={() => handleClick()}
-        style={styles.menu}>
+      <TouchableOpacity onPress={() => handleClick()} style={styles.menu}>
         <Image source={menu} />
       </TouchableOpacity>
       {/* -------------------------------------------- */}
@@ -58,7 +63,7 @@ export default function profileScreen({navigation}) {
         <View style={styles.shadow}>
           <View style={styles.circleBig}>
             <View style={styles.circleSmall}>
-              <Text style={styles.points}>{user.score}</Text>
+              <Text style={styles.points}>{totalPoints}</Text>
             </View>
           </View>
         </View>
