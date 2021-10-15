@@ -28,14 +28,13 @@ const Upload = ({navigation}) => {
 
   useEffect(() => {
     const arr = [];
-    if (user.uid) {
+    if (user.isArtist) {
       //cambiar por if is artist
       firestore()
         .collection('podcasts')
         .where('artistId', '==', user.uid)
         .get()
         .then(podcasts => {
-          console.log(podcasts);
           podcasts.forEach(doc => {
             //console.log(doc.id, '=>', doc.data());
             return arr.push(doc.data());

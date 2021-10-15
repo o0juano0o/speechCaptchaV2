@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {useRecoilState} from 'recoil';
 import {userLogged} from '../recoil/userLogged';
@@ -9,6 +9,11 @@ const image = require('../assets/graphy1.png');
 
 export default function profileScreen({navigation}) {
   const [user, setUser] = useRecoilState(userLogged);
+  const [totalPoints, setTotalPoints] = useState(0);
+
+  useEffect(() => {
+    setTotalPoints(user.score);
+  }, [user]);
 
   return (
     <View style={styles.container}>
@@ -30,7 +35,7 @@ export default function profileScreen({navigation}) {
         <View style={styles.shadow}>
           <View style={styles.circleBig}>
             <View style={styles.circleSmall}>
-              <Text style={styles.points}>{user.score}</Text>
+              <Text style={styles.points}>{totalPoints}</Text>
             </View>
           </View>
         </View>
