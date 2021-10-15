@@ -35,25 +35,28 @@ const Login = ({navigation}) => {
 
   const handleLoggin = () => {
     const {email, password} = input;
-    firebase.auth
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        const {uid} = firebase.auth.currentUser;
-        setUser({uid: uid});
-        Alert.alert('User logged in successfully');
-        navigation.navigate('Podcast');
-      })
-      .catch(error => {
-        Alert.alert('No se pudo iniciar sesion');
+    if (email && password) {
+      firebase.auth
+        .signInWithEmailAndPassword(email, password)
+        .then(() => {
+          const {uid} = firebase.auth.currentUser;
+          setUser({uid: uid});
+          Alert.alert('User logged in successfully');
+          navigation.navigate('Podcast');
+        })
+        .catch(error => {
+          Alert.alert('No se pudo iniciar sesion');
+        });
+      setInput({
+        email: '',
+        password: '',
       });
-    setInput({
-      email: '',
-      password: '',
-    });
+    } else {
+      Alert.alert('Por favor rellene los campos');
+    }
   };
 
   return (
-
     <KeyboardAwareScrollView style={{flex: 1}}>
       <View style={styles.container}>
         <Image source={logo} style={styles.logo} />
@@ -91,13 +94,12 @@ const Login = ({navigation}) => {
               onPress={() => handleLoggin()}>
               <Text style={styles.touchText}>Continuar</Text>
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={styles.touch}
               onPress={() => console.log(user)}>
               <Text style={styles.touchText}>ver estado</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
-
         </View>
       </View>
     </KeyboardAwareScrollView>
@@ -173,16 +175,15 @@ const styles = StyleSheet.create({
   caja: {
     flex: 1,
     backgroundColor: '#EBF7FF',
-    marginTop: '30%',
+    marginTop: '56.7%',
     alignItems: 'center',
   },
   cajaInputs: {
     flex: 1,
     width: '80%',
-    marginBottom: '30%',
+    marginTop: '10%',
+    marginBottom: '10%',
   },
 });
 
 export default Login;
-
-
