@@ -6,6 +6,7 @@ import {
   Button,
   Image,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 
 import storage from '@react-native-firebase/storage';
@@ -101,7 +102,9 @@ const Upload = ({navigation}) => {
               url: audioUrl,
               voicers: 0,
             });
+            Alert.alert('Archivo subido exitosamente');
           } catch (error) {
+            Alert.alert('Ocurrió un error al subir el archivo');
             console.log(error);
           }
         }}>
