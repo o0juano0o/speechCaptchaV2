@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     fontSize: 50,
     fontWeight: 'bold',
     color: '#2ec4b6',
+    right:'2%'
   },
   titulo: {
     color: '#5b5d68',

@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import firebase from '../firebase/config';
+import {useRecoilState} from 'recoil';
+import { userLogged } from '../recoil/userLogged';
 
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
@@ -14,6 +16,7 @@ export default function profileScreen({ navigation }) {
       .then(() => {
         setUser({});
         console.log('User signed out!');
+        navigation.navigate('Presentation')
       })
       .catch(error => console.log('error de cerrar sesion'));
   };
