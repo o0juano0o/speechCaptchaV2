@@ -77,7 +77,7 @@ const Register = ({navigation}) => {
   };
 
   const handleClick = () => {
-    user.isArtist?navigation.navigate('BlueArtist'):navigation.navigate('BlueUser')
+    artist?navigation.navigate('BlueArtist'):navigation.navigate('BlueUser')
   }
 
   return (

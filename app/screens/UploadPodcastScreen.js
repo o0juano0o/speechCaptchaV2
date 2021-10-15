@@ -16,7 +16,9 @@ import RNFetchBlob from 'rn-fetch-blob';
 import RNFS from 'react-native-fs';
 import {useRecoilState} from 'recoil';
 import {getTranscription} from '../utils/transcription';
-import {userLogged} from '../recoil/userLogged';
+import { userLogged } from '../recoil/userLogged';
+import { isArtist } from '../recoil/isArtist';
+
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
 const image = require('../assets/graphy1.png');
@@ -25,10 +27,11 @@ const descarga = require('../assets/cloud-computing.png');
 const Upload = ({navigation}) => {
   const [podcasts, setPodcasts] = React.useState([]);
   const [user, setUser] = useRecoilState(userLogged);
+  const [artist, setArtist] = useRecoilState(isArtist)
 
   useEffect(() => {
     const arr = [];
-    firestore()
+    if(user.isArtist){firestore()
       .collection('podcasts')
       .where('artistId', '==', user.uid)
       .get()
@@ -38,9 +41,7 @@ const Upload = ({navigation}) => {
           return arr.push(doc.data());
         });
         setPodcasts(arr);
-      });
-    console.log(user);
-    console.log(podcasts);
+      });}
   }, [user]);
 
   const pickDocument = async () => {
@@ -59,7 +60,7 @@ const Upload = ({navigation}) => {
   };
 
   const handleClick = () => {
-    user.isArtist?navigation.navigate('BlueArtist'):navigation.navigate('BlueUser')
+    artist?navigation.navigate('BlueArtist'):navigation.navigate('BlueUser')
   }
 
   return (

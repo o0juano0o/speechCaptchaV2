@@ -15,19 +15,20 @@ const image = require('../assets/graphy1.png');
 const pauseIcon = require('../assets/pause.png');
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
-import { userLogged } from '../recoil/userLogged';
 import { useRecoilState } from 'recoil';
+import { isArtist } from '../recoil/isArtist';
 
 export default function TranscriptionScreen({navigation}) {
   const [value, setValue] = React.useState('');
-  const [user, setUser] = useRecoilState(userLogged);
+
+  const [artist, setArtist] = useRecoilState(isArtist)
 
   const handleChange = text => {
     setValue(text);
   };
 
   const handleClick = () => {
-    user.isArtist?navigation.navigate('BlueArtist'):navigation.navigate('BlueUser')
+    artist?navigation.navigate('BlueArtist'):navigation.navigate('BlueUser')
   }
 
   return (

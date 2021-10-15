@@ -13,13 +13,14 @@ const image = require('../assets/graphy1.png');
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
 import {useRecoilState} from 'recoil';
-import {userLogged} from '../recoil/userLogged';
+import {isArtist} from '../recoil/isArtist';
 
 export default function ResultScreen({ navigation }) {
-  const [user, setUser] = useRecoilState(userLogged);
+  
+  const [artist, setArtist] = useRecoilState(isArtist)
 
   const handleClick = () => {
-    user.isArtist?navigation.navigate('BlueArtist'):navigation.navigate('BlueUser')
+    artist?navigation.navigate('BlueArtist'):navigation.navigate('BlueUser')
   }
 
   return (

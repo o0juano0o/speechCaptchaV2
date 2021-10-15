@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import firebase from '../firebase/config';
 import Carousel from 'react-native-anchor-carousel';
-import {userLogged} from '../recoil/userLogged';
+import {isArtist} from '../recoil/isArtist';
 
 
 
@@ -31,7 +31,7 @@ export default function App({navigation}) {
   const [podcast, setPodcast] = useRecoilState(selectedPodcast);
   const carouselRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(INITIAL_INDEX);
-  const [user, setUser] = useRecoilState(userLogged);
+  const [artist, setArtist] = useRecoilState(isArtist)
   function handleCarouselScrollEnd(item, index) {
     setCurrentIndex(index);
   }
@@ -54,7 +54,6 @@ export default function App({navigation}) {
       .catch(err => {
         console.log(err);
       });
-    console.log(podcast);
   }, []);
 
   const handleSelect = podcast => {
@@ -96,7 +95,7 @@ export default function App({navigation}) {
   }
 
   const handleClick = () => {
-    user.isArtist
+  artist
       ? navigation.navigate('BlueArtist')
       : navigation.navigate('BlueUser');
   };
