@@ -10,12 +10,15 @@ import {
 import { Link } from '@react-navigation/native';
 import { useRecoilState } from 'recoil';
 import {isArtist} from '../recoil/isArtist';
+import {userLogged} from '../recoil/userLogged';
+
 
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
 
 const Home = ({ navigation }) => {
-  const [artist, setArtist]=useRecoilState(isArtist)
+  const [artist, setArtist] = useRecoilState(isArtist)
+  const [user, setUser] = useRecoilState(userLogged);
 
 
   const handleClick = (bool) => {
@@ -23,12 +26,16 @@ const Home = ({ navigation }) => {
     navigation.navigate('Register')
   }
 
+  const handleClick1 = () => {
+    user.isArtist?navigation.navigate('BlueArtist'):navigation.navigate('BlueUser')
+  }
+
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.logo} />
       {/* ----------------MENU------------------------ */}
       <TouchableOpacity
-        onPress={() => navigation.navigate('BlueUser')}
+        onPress={() => handleClick1()}
         style={styles.menu}>
         <Image source={menu} />
       </TouchableOpacity>

@@ -58,12 +58,16 @@ const Upload = ({navigation}) => {
     }
   };
 
+  const handleClick = () => {
+    user.isArtist?navigation.navigate('BlueArtist'):navigation.navigate('BlueUser')
+  }
+
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.logo} />
       {/* ----------------MENU------------------------ */}
       <TouchableOpacity
-        onPress={() => navigation.navigate('BlueUser')}
+        onPress={() => handleClick()}
         style={styles.menu}>
         <Image source={menu} />
       </TouchableOpacity>

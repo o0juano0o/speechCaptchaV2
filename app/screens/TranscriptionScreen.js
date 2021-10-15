@@ -15,25 +15,33 @@ const image = require('../assets/graphy1.png');
 const pauseIcon = require('../assets/pause.png');
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
+import { userLogged } from '../recoil/userLogged';
+import { useRecoilState } from 'recoil';
 
 export default function TranscriptionScreen({navigation}) {
   const [value, setValue] = React.useState('');
+  const [user, setUser] = useRecoilState(userLogged);
 
   const handleChange = text => {
     setValue(text);
   };
 
+  const handleClick = () => {
+    user.isArtist?navigation.navigate('BlueArtist'):navigation.navigate('BlueUser')
+  }
+
   return (
     <KeyboardAwareScrollView style={{flex: 1}}>
       <View style={styles.container}>
-        <Image source={logo} style={styles.logo} />
-        {/* ----------------MENU------------------------ */}
-        <TouchableOpacity
-          onPress={() => navigation.navigate('BlueUser')}
-          style={styles.menu}>
-          <Image source={menu} />
-        </TouchableOpacity>
-        {/* -------------------------------------------- */}
+
+      <Image source={logo} style={styles.logo} />
+      {/* ----------------MENU------------------------ */}
+      <TouchableOpacity
+        onPress={() => handleClick()}
+        style={styles.menu}>
+        <Image source={menu} />
+      </TouchableOpacity>
+      {/* -------------------------------------------- */}
 
         <Text style={styles.titulo}>Presta atención al sonido</Text>
         <View style={styles.shadow}>

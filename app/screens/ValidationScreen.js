@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
+import { userLogged } from '../recoil/userLogged';
 
 const image = require('../assets/graphy1.png');
 const pauseIcon = require('../assets/pause.png');
@@ -51,6 +52,7 @@ export default function ValidationScreen({navigation}) {
   const [podcast, setPodcast] = useRecoilState(selectedPodcast);
   const [playing, setPlaying] = useState(false);
   const playbackState = usePlaybackState();
+  const [user, setUser] = useRecoilState(userLogged);
 
   useEffect(() => {
     if (podcast.url) setupPlayer([podcast]);
@@ -65,6 +67,10 @@ export default function ValidationScreen({navigation}) {
     }
   };
 
+  const handleClick = () => {
+    user.isArtist?navigation.navigate('BlueArtist'):navigation.navigate('BlueUser')
+  }
+
   return (
     <>
       <View style={styles.container}>
@@ -72,7 +78,7 @@ export default function ValidationScreen({navigation}) {
         {/* <Image source={menu} style={styles.menu} /> */}
         {/* ----------------MENU------------------------ */}
         <TouchableOpacity
-          onPress={() => navigation.navigate('BlueUser')}
+          onPress={() => handleClick()}
           style={styles.menu}>
           <Image source={menu} />
         </TouchableOpacity>
