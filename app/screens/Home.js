@@ -10,6 +10,8 @@ import {
 import { Link } from '@react-navigation/native';
 import { useRecoilState } from 'recoil';
 import {isArtist} from '../recoil/isArtist';
+import {userLogged} from '../recoil/userLogged';
+
 
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
