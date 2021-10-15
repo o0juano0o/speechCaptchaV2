@@ -33,10 +33,12 @@ export default function TranscriptionScreen({navigation}) {
 
   const handleChange = text => {
     setValue(text);
+    console.log('valueee', value);
   };
   const handlePress = () => {
     const points = podcast.transcription.length * 3;
     setScore(points);
+    const newPoints = user.score + points;
     firestore()
       .collection('podcasts')
       .doc(podcast.doc)
@@ -45,7 +47,7 @@ export default function TranscriptionScreen({navigation}) {
         firestore()
           .collection('users')
           .doc(user.uid)
-          .update({score: user.score + points});
+          .update({score: newPoints});
         // setUser({...user, score: user.score + newScore});
         Alert.alert('Transcripción validada.');
         navigation.navigate('Result');

@@ -39,16 +39,13 @@ import {newScore} from '../recoil/newScore';
 import {userLogged} from '../recoil/userLogged';
 const playTrack = async (playbackState, podcast) => {
   const currentTrack = await TrackPlayer.getCurrentTrack();
-
   if (currentTrack !== null) {
     if (playbackState === State.Paused) {
       await TrackPlayer.play();
     } else {
-      await TrackPlayer.reset();
+      await TrackPlayer.pause();
     }
   }
-
-  await TrackPlayer.add(podcast);
 };
 
 export default function ValidationScreen({navigation}) {
@@ -77,13 +74,13 @@ export default function ValidationScreen({navigation}) {
   };
 
   const handleCorrect = () => {
-    console.log('apretado');
     const points = transcription.length * 2;
     setScore(points);
-    firestore()
-      .collection('users')
-      .doc(user.uid)
-      .update({score: user.score + points});
+    console.log('user', user);
+    console.log('user score', user.score);
+    const newPoints = user.score + points;
+    console.log('newpoints', newPoints);
+    firestore().collection('users').doc(user.uid).update({score: newPoints});
     // setUser({...user, score: user.score + newScore});
     Alert.alert('Transcripción validada.');
 

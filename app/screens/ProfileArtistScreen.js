@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {useRecoilState} from 'recoil';
-import { userLogged } from '../recoil/userLogged';
+import {userLogged} from '../recoil/userLogged';
 import {isArtist} from '../recoil/isArtist';
 import firebase from '../firebase/config';
 import firestore from '@react-native-firebase/firestore';
@@ -10,9 +10,9 @@ const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
 const image = require('../assets/graphy1.png');
 
-export default function profileScreen({ navigation }) {
+export default function profileScreen({navigation}) {
   const [user, setUser] = useRecoilState(userLogged);
-  const [artist, setArtist] = useRecoilState(isArtist)
+  const [artist, setArtist] = useRecoilState(isArtist);
 
   useEffect(() => {
     const current = firebase.auth.currentUser;
@@ -35,24 +35,23 @@ export default function profileScreen({ navigation }) {
   }, []);
 
   const handleClick = () => {
-    artist?navigation.navigate('BlueArtist'):navigation.navigate('BlueUser')
-  }
-    
+    artist
+      ? navigation.navigate('BlueArtist')
+      : navigation.navigate('BlueUser');
+  };
 
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.logo} />
       {/* ----------------MENU------------------------ */}
-      <TouchableOpacity
-        onPress={() => handleClick()}
-        style={styles.menu}>
+      <TouchableOpacity onPress={() => handleClick()} style={styles.menu}>
         <Image source={menu} />
       </TouchableOpacity>
       {/* -------------------------------------------- */}
       <View style={styles.container1}>
         <Text style={styles.title}>Tus datos</Text>
-        <Text style={styles.text}>UserName: { user.username}</Text>
-        <Text style={styles.text}>Email: { user.email}</Text>
+        <Text style={styles.text}>UserName: {user.username}</Text>
+        <Text style={styles.text}>Email: {user.email}</Text>
         <Text style={styles.text}>Podcasts subidos:</Text>
       </View>
       <View style={styles.container2}>
@@ -110,6 +109,7 @@ const styles = StyleSheet.create({
   image: {
     position: 'relative',
     left: '16%',
+    top: '1%',
     marginBottom: '-130%',
   },
 });
