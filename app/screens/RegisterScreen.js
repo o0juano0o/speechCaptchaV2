@@ -11,9 +11,9 @@ import {
   Alert,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-
 import firebase from '../firebase/config';
 import {validateEmail, validatePassword} from '../utils/validations';
+import {isArtist} from '../recoil/isArtist';
 
 // ASSETS
 const icon = require('../assets/icon.png');
@@ -31,6 +31,7 @@ const Register = ({navigation}) => {
     password2: '',
   });
   const [user, setUser] = useRecoilState(userLogged);
+  const [artist, setArtist] = useRecoilState(isArtist);
 
   const handleChangeText = (name, value) => {
     setInput({...input, [name]: value});
@@ -49,13 +50,15 @@ const Register = ({navigation}) => {
               email: email,
               username: username,
               score: 0,
-              isArtist: false,
+              isArtist: artist,
             })
             .then(cred => {
               Alert.alert('Usuario registrado exitosamente');
               const {email, uid} = firebase.auth.currentUser;
               setUser({email: email, uid: uid});
-              navigation.navigate('Podcast');
+              artist === true
+                ? navigation.navigate('Upload')
+                : navigation.navigate('Podcast');
             });
         })
         .catch(error => {

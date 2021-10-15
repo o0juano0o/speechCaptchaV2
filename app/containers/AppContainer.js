@@ -47,7 +47,7 @@ const AppContainer = () => {
           });
         });
     }
-    console.log('current user', user);
+    console.log("APPCONTAINER",user);
   }, []);
 
   return (

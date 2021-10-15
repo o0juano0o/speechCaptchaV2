@@ -7,12 +7,22 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import {Link} from '@react-navigation/native';
+import { Link } from '@react-navigation/native';
+import { useRecoilState } from 'recoil';
+import {isArtist} from '../recoil/isArtist';
 
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
 
-const Home = ({navigation}) => {
+const Home = ({ navigation }) => {
+  const [artist, setArtist]=useRecoilState(isArtist)
+
+
+  const handleClick = (bool) => {
+    setArtist(bool)
+    navigation.navigate('Register')
+  }
+
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.logo} />
@@ -27,12 +37,12 @@ const Home = ({navigation}) => {
       <View style={styles.buttons}>
         <TouchableOpacity
           style={styles.btn1}
-          onPress={() => navigation.navigate('Register')}>
+          onPress={() => handleClick(true)}>
           <Text style={styles.text1}>REGISTRATE COMO ARTISTA</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.btn2}
-          onPress={() => navigation.navigate('Register')}>
+          onPress={() => handleClick(false) }>
           <Text style={styles.text2}>REGISTRATE COMO VOICER</Text>
         </TouchableOpacity>
       </View>

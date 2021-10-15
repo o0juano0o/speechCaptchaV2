@@ -14,6 +14,7 @@ import {
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import firebase from '../firebase/config';
+import firestore from '@react-native-firebase/firestore';
 
 const icon = require('../assets/icon.png');
 const logo = require('../assets/vcapp.png');
@@ -35,22 +36,35 @@ const Login = ({navigation}) => {
 
   const handleLoggin = () => {
     const {email, password} = input;
+
     if (email && password) {
       firebase.auth
         .signInWithEmailAndPassword(email, password)
-        .then(() => {
-          const {uid} = firebase.auth.currentUser;
-          setUser({uid: uid});
-          Alert.alert('User logged in successfully');
-          navigation.navigate('Podcast');
+        .then(res => {
+          console.log('RES', res.user.uid);
+          firestore()
+            .collection('users')
+            .doc(res.user.uid)
+            .get()
+            .then(userInfo => {
+              setUser({
+                uid: res.user.uid,
+                username: userInfo._data.username,
+                email: userInfo._data.email,
+                isArtist: userInfo._data.isArtist,
+                score: userInfo._data.score,
+              });
+              Alert.alert('User logged in successfully');
+              if (userInfo._data.isArtist) {
+                navigation.navigate('Upload');
+              } else {
+                navigation.navigate('Podcast');
+              }
+            });
         })
         .catch(error => {
           Alert.alert('No se pudo iniciar sesion');
         });
-      setInput({
-        email: '',
-        password: '',
-      });
     } else {
       Alert.alert('Por favor rellene los campos');
     }
