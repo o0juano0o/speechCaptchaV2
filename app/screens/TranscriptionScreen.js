@@ -18,10 +18,15 @@ const menu = require('../assets/menu.png');
 
 export default function TranscriptionScreen({navigation}) {
   const [value, setValue] = React.useState('');
+  const [user, setUser] = useRecoilState(userLogged);
 
   const handleChange = text => {
     setValue(text);
   };
+
+  const handleClick = () => {
+    user.isArtist?navigation.navigate('BlueArtist'):navigation.navigate('BlueUser')
+  }
 
   return (
     <KeyboardAwareScrollView style={{flex: 1}}>
@@ -30,7 +35,7 @@ export default function TranscriptionScreen({navigation}) {
       <Image source={logo} style={styles.logo} />
       {/* ----------------MENU------------------------ */}
       <TouchableOpacity
-        onPress={() => navigation.navigate('BlueUser')}
+        onPress={() => handleClick()}
         style={styles.menu}>
         <Image source={menu} />
       </TouchableOpacity>

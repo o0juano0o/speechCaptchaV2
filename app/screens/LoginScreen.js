@@ -71,6 +71,10 @@ const Login = ({navigation}) => {
     });
   };
 
+  const handleClick = () => {
+    userInfo._data.isArtist?navigation.navigate('BlueArtist'):navigation.navigate('BlueUser')
+  }
+
   return (
 
     <KeyboardAwareScrollView style={{flex: 1}}>
@@ -79,7 +83,7 @@ const Login = ({navigation}) => {
         {/* <Image source={menu} style={styles.menu} /> */}
         {/* ----------------MENU------------------------ */}
         <TouchableOpacity
-          onPress={() => navigation.navigate('BlueUser')}
+          onPress={() =>handleClick() }
           style={styles.menu}>
           <Image source={menu} />
         </TouchableOpacity>
