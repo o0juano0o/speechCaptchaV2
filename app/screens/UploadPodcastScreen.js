@@ -27,19 +27,23 @@ const Upload = ({navigation}) => {
 
   useEffect(() => {
     const arr = [];
-    firestore()
-      .collection('podcasts')
-      .where('artistId', '==', user.uid)
-      .get()
-      .then(podcasts => {
-        podcasts.forEach(doc => {
-          //console.log(doc.id, '=>', doc.data());
-          return arr.push(doc.data());
+    if (user.uid) {
+      //cambiar por if is artist
+      firestore()
+        .collection('podcasts')
+        .where('artistId', '==', user.uid)
+        .get()
+        .then(podcasts => {
+          console.log(podcasts);
+          podcasts.forEach(doc => {
+            //console.log(doc.id, '=>', doc.data());
+            return arr.push(doc.data());
+          });
+          setPodcasts(arr);
         });
-        setPodcasts(arr);
-      });
-    console.log(user);
-    console.log(podcasts);
+      console.log(user);
+      console.log(podcasts);
+    }
   }, [user]);
 
   const pickDocument = async () => {
@@ -120,7 +124,7 @@ const styles = StyleSheet.create({
     color: '#5b5d68',
     fontWeight: 'bold',
     marginBottom: '25%',
-     textAlign: 'center',
+    textAlign: 'center',
   },
   text: {
     top: '-15%',
