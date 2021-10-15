@@ -17,6 +17,8 @@ import RNFS from 'react-native-fs';
 import {useRecoilState} from 'recoil';
 import {getTranscription} from '../utils/transcription';
 import {userLogged} from '../recoil/userLogged';
+import {isArtist} from '../recoil/isArtist';
+
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
 const image = require('../assets/graphy1.png');
@@ -25,20 +27,26 @@ const descarga = require('../assets/cloud-computing.png');
 const Upload = ({navigation}) => {
   const [podcasts, setPodcasts] = React.useState([]);
   const [user, setUser] = useRecoilState(userLogged);
+  const [artist, setArtist] = useRecoilState(isArtist);
 
   useEffect(() => {
     const arr = [];
-    firestore()
-      .collection('podcasts')
-      .where('artistId', '==', user.uid)
-      .get()
-      .then(podcasts => {
-        podcasts.forEach(doc => {
-          //console.log(doc.id, '=>', doc.data());
-          return arr.push(doc.data());
+    if (user.isArtist) {
+      //cambiar por if is artist
+      firestore()
+        .collection('podcasts')
+        .where('artistId', '==', user.uid)
+        .get()
+        .then(podcasts => {
+          podcasts.forEach(doc => {
+            //console.log(doc.id, '=>', doc.data());
+            return arr.push(doc.data());
+          });
+          setPodcasts(arr);
         });
-        setPodcasts(arr);
-      });
+      console.log(user);
+      console.log(podcasts);
+    }
   }, [user]);
 
   const pickDocument = async () => {
@@ -56,13 +64,17 @@ const Upload = ({navigation}) => {
     }
   };
 
+  const handleClick = () => {
+    artist
+      ? navigation.navigate('BlueArtist')
+      : navigation.navigate('BlueUser');
+  };
+
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.logo} />
       {/* ----------------MENU------------------------ */}
-      <TouchableOpacity
-        onPress={() => navigation.navigate('BlueUser')}
-        style={styles.menu}>
+      <TouchableOpacity onPress={() => handleClick()} style={styles.menu}>
         <Image source={menu} />
       </TouchableOpacity>
       {/* -------------------------------------------- */}

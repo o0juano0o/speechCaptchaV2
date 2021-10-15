@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,30 +8,62 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
+import firebase from '../firebase/config';
+import {useRecoilState} from 'recoil';
+import {userLogged} from '../recoil/userLogged';
+import {newScore} from '../recoil/newScore';
+import {isArtist} from '../recoil/isArtist';
 
 const image = require('../assets/graphy1.png');
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
 
 export default function ResultScreen({navigation}) {
+  const [user, setUser] = useRecoilState(userLogged);
+  const [score, setScore] = useRecoilState(newScore);
+  const [artist, setArtist] = useRecoilState(isArtist);
+
+  useEffect(() => {
+    const current = firebase.auth.currentUser;
+    if (current !== null) {
+      const {uid} = firebase.auth.currentUser;
+      firestore()
+        .collection('users')
+        .doc(uid)
+        .get()
+        .then(userInfo => {
+          setUser({
+            uid: uid,
+            username: userInfo._data.username,
+            email: userInfo._data.email,
+            isArtist: userInfo._data.isArtist,
+            score: userInfo._data.score,
+          });
+        });
+    }
+    console.log('APPCONTAINER', user);
+  }, [score]);
+
+  const handleClick = () => {
+    artist
+      ? navigation.navigate('BlueArtist')
+      : navigation.navigate('BlueUser');
+  };
   return (
     <>
       <View style={styles.container}>
-      <Image source={logo} style={styles.logo} />
-      {/* ----------------MENU------------------------ */}
-      <TouchableOpacity
-        onPress={() => navigation.navigate('BlueUser')}
-        style={styles.menu}>
-        <Image source={menu} />
-      </TouchableOpacity>
-      {/* -------------------------------------------- */}
+        <Image source={logo} style={styles.logo} />
+        {/* ----------------MENU------------------------ */}
+        <TouchableOpacity onPress={() => handleClick()} style={styles.menu}>
+          <Image source={menu} />
+        </TouchableOpacity>
+        {/* -------------------------------------------- */}
         <Text style={styles.titulo}>Felicitaciones!</Text>
         <View style={styles.shadow}>
           <View style={styles.circleBig}>
             <View style={styles.circleSmall}>
-              <Text style={styles.points}>
-                {Math.floor(Math.random() * (62 - 17)) + 17}
-              </Text>
+              <Text style={styles.points}>{score}</Text>
             </View>
           </View>
         </View>
@@ -60,7 +92,7 @@ const styles = StyleSheet.create({
     fontSize: 50,
     fontWeight: 'bold',
     color: '#2ec4b6',
-    right:'2%'
+    right: '2%',
   },
   titulo: {
     color: '#5b5d68',

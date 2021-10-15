@@ -3,17 +3,20 @@ import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import firebase from '../firebase/config';
 import {useRecoilState} from 'recoil';
 import { userLogged } from '../recoil/userLogged';
+import {isArtist} from '../recoil/isArtist';
 
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
 
 export default function profileScreen({navigation}) {
   const [user, setUser] = useRecoilState(userLogged);
+  const [artist, setArtist] = useRecoilState(isArtist)
 
   const handleSalir = () => {
     firebase.auth
       .signOut()
       .then(() => {
+        setArtist(false)
         setUser({});
         console.log('User signed out!');
         navigation.navigate('Presentation')
