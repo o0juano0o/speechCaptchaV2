@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
+import { userLogged } from '../recoil/userLogged';
 
 const image = require('../assets/graphy1.png');
 const pauseIcon = require('../assets/pause.png');

@@ -15,6 +15,8 @@ const image = require('../assets/graphy1.png');
 const pauseIcon = require('../assets/pause.png');
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
+import { userLogged } from '../recoil/userLogged';
+import { useRecoilState } from 'recoil';
 
 export default function TranscriptionScreen({navigation}) {
   const [value, setValue] = React.useState('');

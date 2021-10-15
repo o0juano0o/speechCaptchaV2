@@ -11,6 +11,9 @@ import {
 } from 'react-native';
 import firebase from '../firebase/config';
 import Carousel from 'react-native-anchor-carousel';
+import {userLogged} from '../recoil/userLogged';
+
+
 
 const IconPlay = require('../assets/play.png');
 const image = require('../assets/graphy1.png');

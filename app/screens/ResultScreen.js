@@ -12,6 +12,8 @@ import {
 const image = require('../assets/graphy1.png');
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
+import {useRecoilState} from 'recoil';
+import {userLogged} from '../recoil/userLogged';
 
 export default function ResultScreen({ navigation }) {
   const [user, setUser] = useRecoilState(userLogged);
