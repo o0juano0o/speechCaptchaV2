@@ -10,6 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import {isArtist} from '../recoil/isArtist';
 
 const image = require('../assets/graphy1.png');
 const pauseIcon = require('../assets/pause.png');
@@ -57,6 +58,7 @@ export default function ValidationScreen({navigation}) {
   const [score, setScore] = useRecoilState(newScore);
   const [user, setUser] = useRecoilState(userLogged);
   const playbackState = usePlaybackState();
+  const [artist, setArtist] = useRecoilState(isArtist);
 
   useEffect(() => {
     if (podcast.url) {
@@ -87,6 +89,11 @@ export default function ValidationScreen({navigation}) {
 
     navigation.navigate('Result');
   };
+  const handleClick = () => {
+    artist
+      ? navigation.navigate('BlueArtist')
+      : navigation.navigate('BlueUser');
+  };
 
   return (
     <>
@@ -94,9 +101,7 @@ export default function ValidationScreen({navigation}) {
         <Image source={logo} style={styles.logo} />
         {/* <Image source={menu} style={styles.menu} /> */}
         {/* ----------------MENU------------------------ */}
-        <TouchableOpacity
-          onPress={() => navigation.navigate('BlueUser')}
-          style={styles.menu}>
+        <TouchableOpacity onPress={() => handleClick()} style={styles.menu}>
           <Image source={menu} />
         </TouchableOpacity>
         {/* -------------------------------------------- */}
@@ -168,7 +173,7 @@ const styles = StyleSheet.create({
   },
   image: {
     position: 'relative',
-    top: '10%',
+    top: '15%',
     width: '100%',
     height: '100%',
     display: 'flex',

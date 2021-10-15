@@ -1,7 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import {useRecoilState} from 'recoil';
 import { userLogged } from '../recoil/userLogged';
+import {isArtist} from '../recoil/isArtist';
+import firebase from '../firebase/config';
+import firestore from '@react-native-firebase/firestore';
 
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
@@ -9,13 +12,39 @@ const image = require('../assets/graphy1.png');
 
 export default function profileScreen({ navigation }) {
   const [user, setUser] = useRecoilState(userLogged);
+  const [artist, setArtist] = useRecoilState(isArtist)
+
+  useEffect(() => {
+    const current = firebase.auth.currentUser;
+    if (current !== null) {
+      const {uid} = firebase.auth.currentUser;
+      firestore()
+        .collection('users')
+        .doc(uid)
+        .get()
+        .then(userInfo => {
+          setUser({
+            uid: uid,
+            username: userInfo._data.username,
+            email: userInfo._data.email,
+            isArtist: userInfo._data.isArtist,
+            score: userInfo._data.score,
+          });
+        });
+    }
+  }, []);
+
+  const handleClick = () => {
+    artist?navigation.navigate('BlueArtist'):navigation.navigate('BlueUser')
+  }
+    
 
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.logo} />
       {/* ----------------MENU------------------------ */}
       <TouchableOpacity
-        onPress={() => navigation.navigate('BlueUser')}
+        onPress={() => handleClick()}
         style={styles.menu}>
         <Image source={menu} />
       </TouchableOpacity>

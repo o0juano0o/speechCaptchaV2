@@ -13,6 +13,7 @@ import firebase from '../firebase/config';
 import {useRecoilState} from 'recoil';
 import {userLogged} from '../recoil/userLogged';
 import {newScore} from '../recoil/newScore';
+import {isArtist} from '../recoil/isArtist';
 
 const image = require('../assets/graphy1.png');
 const logo = require('../assets/vcapp.png');
@@ -21,6 +22,7 @@ const menu = require('../assets/menu.png');
 export default function ResultScreen({navigation}) {
   const [user, setUser] = useRecoilState(userLogged);
   const [score, setScore] = useRecoilState(newScore);
+  const [artist, setArtist] = useRecoilState(isArtist);
 
   useEffect(() => {
     const current = firebase.auth.currentUser;
@@ -42,14 +44,18 @@ export default function ResultScreen({navigation}) {
     }
     console.log('APPCONTAINER', user);
   }, [score]);
+
+  const handleClick = () => {
+    artist
+      ? navigation.navigate('BlueArtist')
+      : navigation.navigate('BlueUser');
+  };
   return (
     <>
       <View style={styles.container}>
         <Image source={logo} style={styles.logo} />
         {/* ----------------MENU------------------------ */}
-        <TouchableOpacity
-          onPress={() => navigation.navigate('BlueUser')}
-          style={styles.menu}>
+        <TouchableOpacity onPress={() => handleClick()} style={styles.menu}>
           <Image source={menu} />
         </TouchableOpacity>
         {/* -------------------------------------------- */}

@@ -14,6 +14,7 @@ export default function profileScreen({ navigation }) {
     firebase.auth
       .signOut()
       .then(() => {
+        //setArtist(false)
         setUser({});
         console.log('User signed out!');
         navigation.navigate('Presentation')

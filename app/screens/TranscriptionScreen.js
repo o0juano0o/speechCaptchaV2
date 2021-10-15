@@ -16,6 +16,7 @@ import {useRecoilState} from 'recoil';
 import {selectedPodcast} from '../recoil/selectedPodcast';
 import {userLogged} from '../recoil/userLogged';
 import {newScore} from '../recoil/newScore';
+import {isArtist} from '../recoil/isArtist';
 
 const image = require('../assets/graphy1.png');
 const pauseIcon = require('../assets/pause.png');
@@ -27,6 +28,8 @@ export default function TranscriptionScreen({navigation}) {
   const [podcast, setPodcast] = useRecoilState(selectedPodcast);
   const [user, setUser] = useRecoilState(userLogged);
   const [score, setScore] = useRecoilState(newScore);
+
+  const [artist, setArtist] = useRecoilState(isArtist);
 
   const handleChange = text => {
     setValue(text);
@@ -48,14 +51,19 @@ export default function TranscriptionScreen({navigation}) {
         navigation.navigate('Result');
       });
   };
+
+  const handleClick = () => {
+    artist
+      ? navigation.navigate('BlueArtist')
+      : navigation.navigate('BlueUser');
+  };
+
   return (
     <KeyboardAwareScrollView style={{flex: 1}}>
       <View style={styles.container}>
         <Image source={logo} style={styles.logo} />
         {/* ----------------MENU------------------------ */}
-        <TouchableOpacity
-          onPress={() => navigation.navigate('BlueUser')}
-          style={styles.menu}>
+        <TouchableOpacity onPress={() => handleClick()} style={styles.menu}>
           <Image source={menu} />
         </TouchableOpacity>
         {/* -------------------------------------------- */}

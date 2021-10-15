@@ -12,6 +12,8 @@ import {
 import firebase from '../firebase/config';
 import Carousel from 'react-native-anchor-carousel';
 import firestore from '@react-native-firebase/firestore';
+import {isArtist} from '../recoil/isArtist';
+
 const IconPlay = require('../assets/play.png');
 const image = require('../assets/graphy1.png');
 const logo = require('../assets/vcapp.png');
@@ -28,6 +30,7 @@ export default function App({navigation}) {
   const [podcast, setPodcast] = useRecoilState(selectedPodcast);
   const carouselRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(INITIAL_INDEX);
+  const [artist, setArtist] = useRecoilState(isArtist);
   function handleCarouselScrollEnd(item, index) {
     setCurrentIndex(index);
   }
@@ -105,13 +108,18 @@ export default function App({navigation}) {
       </TouchableOpacity>
     );
   }
+
+  const handleClick = () => {
+    artist
+      ? navigation.navigate('BlueArtist')
+      : navigation.navigate('BlueUser');
+  };
+
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.logo} />
       {/* ----------------MENU------------------------ */}
-      <TouchableOpacity
-        onPress={() => navigation.navigate('BlueUser')}
-        style={styles.menu}>
+      <TouchableOpacity onPress={() => handleClick()} style={styles.menu}>
         <Image source={menu} />
       </TouchableOpacity>
       {/* -------------------------------------------- */}

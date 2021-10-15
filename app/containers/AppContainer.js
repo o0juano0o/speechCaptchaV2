@@ -21,15 +21,15 @@ import ProfileUserScreen from '../screens/ProfileUserScreen';
 import ProfileArtistScreen from '../screens/ProfileArtistScreen';
 import TotalPoints from '../screens/TotalPoints';
 
-import firebase from '../firebase/config';
-import firestore from '@react-native-firebase/firestore';
+//import firebase from '../firebase/config';
+//import firestore from '@react-native-firebase/firestore';
 import {userLogged} from '../recoil/userLogged';
 
 const AppContainer = () => {
   const Stack = createNativeStackNavigator();
-  const [user, setUser] = useRecoilState(userLogged);
+  //const [user, setUser] = useRecoilState(userLogged);
 
-  useEffect(() => {
+  /* useEffect(() => {
     const current = firebase.auth.currentUser;
     if (current !== null) {
       const {uid} = firebase.auth.currentUser;
@@ -47,8 +47,7 @@ const AppContainer = () => {
           });
         });
     }
-    console.log("APPCONTAINER",user);
-  }, []);
+  }, []); */
 
   return (
     <NavigationContainer>
@@ -56,6 +55,7 @@ const AppContainer = () => {
         screenOptions={{
           headerShown: false,
         }}>
+        <Stack.Screen name="Presentation" component={PresentationScreen} />
         <Stack.Screen name="Selection" component={SelectionScreen} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Podcast" component={PodcastScreen} />
@@ -68,7 +68,7 @@ const AppContainer = () => {
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="BlueUser" component={BlueUserScreen} />
         <Stack.Screen name="BlueArtist" component={BlueArtistScreen} />
-        <Stack.Screen name="Presentation" component={PresentationScreen} />
+        
         <Stack.Screen name="ProfileUser" component={ProfileUserScreen} />
         <Stack.Screen name="ProfileArtist" component={ProfileArtistScreen} />
         <Stack.Screen name="TotalPoints" component={TotalPoints} />
