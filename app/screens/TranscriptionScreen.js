@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: '4%',
+    bottom: '0%',
   },
   enviarText: {
     color: 'white',
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   },
   //REPRODUCIENDO
   shadow: {
-    marginTop: '7%',
+    marginTop: '20%',
     marginBottom: '3%',
     width: 150,
     height: 150,
