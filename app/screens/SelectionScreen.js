@@ -55,7 +55,7 @@ export default function SelectionScreen({navigation}) {
       .listAll()
       .then(res => {
         res.items.forEach(item => {
-          console.log(item.path);
+          //console.log(item.path);
           let audioRef = storageRef.child(item.path);
           audioRef.getDownloadURL().then(res => {
             console.log(res);

@@ -19,6 +19,8 @@ import RNFS from 'react-native-fs';
 import {useRecoilState} from 'recoil';
 import {getTranscription} from '../utils/transcription';
 import {userLogged} from '../recoil/userLogged';
+import {isArtist} from '../recoil/isArtist';
+
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
 const image = require('../assets/graphy1.png');
@@ -27,10 +29,12 @@ const descarga = require('../assets/cloud-computing.png');
 const Upload = ({navigation}) => {
   const [podcasts, setPodcasts] = React.useState([]);
   const [user, setUser] = useRecoilState(userLogged);
+  const [artist, setArtist] = useRecoilState(isArtist);
 
   useEffect(() => {
     const arr = [];
     if (user.isArtist) {
+      //cambiar por if is artist
       firestore()
         .collection('podcasts')
         .where('artistId', '==', user.uid)
@@ -63,7 +67,7 @@ const Upload = ({navigation}) => {
   };
 
   const handleClick = () => {
-    user.isArtist
+    artist
       ? navigation.navigate('BlueArtist')
       : navigation.navigate('BlueUser');
   };

@@ -22,6 +22,7 @@ const menu = require('../assets/menu.png');
 
 // RECOIL
 import {userLogged} from '../recoil/userLogged';
+import {isArtist} from '../recoil/isArtist';
 
 const Login = ({navigation}) => {
   const [input, setInput] = useState({
@@ -29,6 +30,7 @@ const Login = ({navigation}) => {
     password: '',
   });
   const [user, setUser] = useRecoilState(userLogged);
+  const [artist, setArtist] = useRecoilState(isArtist);
 
   const handleChangeText = (name, value) => {
     setInput({...input, [name]: value});
@@ -41,12 +43,12 @@ const Login = ({navigation}) => {
       firebase.auth
         .signInWithEmailAndPassword(email, password)
         .then(res => {
-          console.log('RES', res.user.uid);
           firestore()
             .collection('users')
             .doc(res.user.uid)
             .get()
             .then(userInfo => {
+              setArtist(userInfo._data.isArtist);
               setUser({
                 uid: res.user.uid,
                 username: userInfo._data.username,
@@ -54,6 +56,7 @@ const Login = ({navigation}) => {
                 isArtist: userInfo._data.isArtist,
                 score: userInfo._data.score,
               });
+
               Alert.alert('User logged in successfully');
               if (userInfo._data.isArtist) {
                 navigation.navigate('Upload');
@@ -71,8 +74,10 @@ const Login = ({navigation}) => {
   };
 
   const handleClick = () => {
-    userInfo._data.isArtist?navigation.navigate('BlueArtist'):navigation.navigate('BlueUser')
-  }
+    user.isArtist
+      ? navigation.navigate('BlueArtist')
+      : navigation.navigate('BlueUser');
+  };
 
   return (
     <KeyboardAwareScrollView style={{flex: 1}}>
@@ -80,9 +85,7 @@ const Login = ({navigation}) => {
         <Image source={logo} style={styles.logo} />
         {/* <Image source={menu} style={styles.menu} /> */}
         {/* ----------------MENU------------------------ */}
-        <TouchableOpacity
-          onPress={() =>handleClick() }
-          style={styles.menu}>
+        <TouchableOpacity onPress={() => handleClick()} style={styles.menu}>
           <Image source={menu} />
         </TouchableOpacity>
         {/* -------------------------------------------- */}

@@ -55,6 +55,7 @@ const AppContainer = () => {
         screenOptions={{
           headerShown: false,
         }}>
+        <Stack.Screen name="Presentation" component={PresentationScreen} />
         <Stack.Screen name="Selection" component={SelectionScreen} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Podcast" component={PodcastScreen} />
@@ -67,7 +68,7 @@ const AppContainer = () => {
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="BlueUser" component={BlueUserScreen} />
         <Stack.Screen name="BlueArtist" component={BlueArtistScreen} />
-        <Stack.Screen name="Presentation" component={PresentationScreen} />
+
         <Stack.Screen name="ProfileUser" component={ProfileUserScreen} />
         <Stack.Screen name="ProfileArtist" component={ProfileArtistScreen} />
         <Stack.Screen name="TotalPoints" component={TotalPoints} />

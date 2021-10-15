@@ -7,41 +7,68 @@ import {
   Button,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import firestore from '@react-native-firebase/firestore';
+import {useRecoilState} from 'recoil';
+import {selectedPodcast} from '../recoil/selectedPodcast';
+import {userLogged} from '../recoil/userLogged';
+import {newScore} from '../recoil/newScore';
+import {isArtist} from '../recoil/isArtist';
 
 const image = require('../assets/graphy1.png');
 const pauseIcon = require('../assets/pause.png');
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
-import { userLogged } from '../recoil/userLogged';
-import { useRecoilState } from 'recoil';
 
 export default function TranscriptionScreen({navigation}) {
   const [value, setValue] = React.useState('');
+  const [podcast, setPodcast] = useRecoilState(selectedPodcast);
   const [user, setUser] = useRecoilState(userLogged);
+  const [score, setScore] = useRecoilState(newScore);
+
+  const [artist, setArtist] = useRecoilState(isArtist);
 
   const handleChange = text => {
     setValue(text);
+    console.log('valueee', value);
+  };
+  const handlePress = () => {
+    const points = podcast.transcription.length * 3;
+    setScore(points);
+    const newPoints = user.score + points;
+    firestore()
+      .collection('podcasts')
+      .doc(podcast.doc)
+      .update({transcription: value})
+      .then(() => {
+        firestore()
+          .collection('users')
+          .doc(user.uid)
+          .update({score: newPoints});
+        // setUser({...user, score: user.score + newScore});
+        Alert.alert('Transcripción validada.');
+        navigation.navigate('Result');
+      });
   };
 
   const handleClick = () => {
-    user.isArtist?navigation.navigate('BlueArtist'):navigation.navigate('BlueUser')
-  }
+    artist
+      ? navigation.navigate('BlueArtist')
+      : navigation.navigate('BlueUser');
+  };
 
   return (
     <KeyboardAwareScrollView style={{flex: 1}}>
       <View style={styles.container}>
-
-      <Image source={logo} style={styles.logo} />
-      {/* ----------------MENU------------------------ */}
-      <TouchableOpacity
-        onPress={() => handleClick()}
-        style={styles.menu}>
-        <Image source={menu} />
-      </TouchableOpacity>
-      {/* -------------------------------------------- */}
+        <Image source={logo} style={styles.logo} />
+        {/* ----------------MENU------------------------ */}
+        <TouchableOpacity onPress={() => handleClick()} style={styles.menu}>
+          <Image source={menu} />
+        </TouchableOpacity>
+        {/* -------------------------------------------- */}
 
         <Text style={styles.titulo}>Presta atención al sonido</Text>
         <View style={styles.shadow}>
@@ -59,9 +86,7 @@ export default function TranscriptionScreen({navigation}) {
           onChangeText={text => handleChange(text)}
           placeholder="Escribe aquí lo que escuchaste"
         />
-        <TouchableOpacity
-          style={styles.enviar}
-          onPress={() => navigation.navigate('Result')}>
+        <TouchableOpacity style={styles.enviar} onPress={() => handlePress()}>
           <Text style={styles.enviarText}>Enviar</Text>
         </TouchableOpacity>
       </View>
