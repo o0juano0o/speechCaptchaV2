@@ -21,6 +21,7 @@ export default function TranscriptionScreen({navigation}) {
 
   const handleChange = text => {
     setValue(text);
+    console.log('valueee', value);
   };
 
   return (

@@ -35,16 +35,13 @@ import {selectedPodcast} from '../recoil/selectedPodcast';
 
 const playTrack = async (playbackState, podcast) => {
   const currentTrack = await TrackPlayer.getCurrentTrack();
-
   if (currentTrack !== null) {
     if (playbackState === State.Paused) {
       await TrackPlayer.play();
     } else {
-      await TrackPlayer.reset();
+      await TrackPlayer.pause();
     }
   }
-
-  await TrackPlayer.add(podcast);
 };
 
 export default function ValidationScreen({navigation}) {

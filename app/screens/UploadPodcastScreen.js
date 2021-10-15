@@ -39,8 +39,6 @@ const Upload = ({navigation}) => {
         });
         setPodcasts(arr);
       });
-    console.log(user);
-    console.log(podcasts);
   }, [user]);
 
   const pickDocument = async () => {
