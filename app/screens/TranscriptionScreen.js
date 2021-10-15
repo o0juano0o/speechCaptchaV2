@@ -26,15 +26,14 @@ export default function TranscriptionScreen({navigation}) {
   return (
     <KeyboardAwareScrollView style={{flex: 1}}>
       <View style={styles.container}>
-
-      <Image source={logo} style={styles.logo} />
-      {/* ----------------MENU------------------------ */}
-      <TouchableOpacity
-        onPress={() => navigation.navigate('BlueUser')}
-        style={styles.menu}>
-        <Image source={menu} />
-      </TouchableOpacity>
-      {/* -------------------------------------------- */}
+        <Image source={logo} style={styles.logo} />
+        {/* ----------------MENU------------------------ */}
+        <TouchableOpacity
+          onPress={() => navigation.navigate('BlueUser')}
+          style={styles.menu}>
+          <Image source={menu} />
+        </TouchableOpacity>
+        {/* -------------------------------------------- */}
 
         <Text style={styles.titulo}>Presta atención al sonido</Text>
         <View style={styles.shadow}>
@@ -88,7 +87,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: '4%',
+    bottom: '0%',
   },
   enviarText: {
     color: 'white',
@@ -123,7 +122,7 @@ const styles = StyleSheet.create({
   },
   //REPRODUCIENDO
   shadow: {
-    marginTop: '7%',
+    marginTop: '20%',
     marginBottom: '3%',
     width: 150,
     height: 150,

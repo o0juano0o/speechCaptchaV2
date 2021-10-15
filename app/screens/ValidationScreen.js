@@ -17,7 +17,13 @@ const menu = require('../assets/menu.png');
 const aceptar = require('../assets/aceptar.png');
 const cancelar = require('../assets/cancelar.png');
 
-import TrackPlayer, {State, usePlaybackState} from 'react-native-track-player';
+import TrackPlayer, {
+  State,
+  usePlaybackState,
+  Event,
+  RepeatMode,
+  useTrackPlayerEvents,
+} from 'react-native-track-player';
 
 const setupPlayer = async podcast => {
   await TrackPlayer.setupPlayer();

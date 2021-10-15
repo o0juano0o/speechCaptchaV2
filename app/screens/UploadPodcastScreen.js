@@ -6,6 +6,7 @@ import {
   Button,
   Image,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 
 import storage from '@react-native-firebase/storage';
@@ -97,7 +98,9 @@ const Upload = ({navigation}) => {
               url: audioUrl,
               voicers: 0,
             });
+            Alert.alert('Archivo subido exitosamente');
           } catch (error) {
+            Alert.alert('Ocurrió un error al subir el archivo');
             console.log(error);
           }
         }}>
@@ -120,7 +123,7 @@ const styles = StyleSheet.create({
     color: '#5b5d68',
     fontWeight: 'bold',
     marginBottom: '25%',
-     textAlign: 'center',
+    textAlign: 'center',
   },
   text: {
     top: '-15%',

@@ -37,39 +37,43 @@ const Register = ({navigation}) => {
     setInput({...input, [name]: value});
   };
 
-  const handlePrueba = () => {
+  const handleRegister = () => {
     const {username, email, password} = input;
-    firebase.auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(cred => {
-        return firebase.db
-          .collection('users')
-          .doc(cred.user.uid)
-          .set({
-            email: email,
-            username: username,
-            score: 0,
-            isArtist: artist,
-          })
-          .then(cred => {
-            Alert.alert('Usuario registrado exitosamente');
-            const {email, uid} = firebase.auth.currentUser;
-            setUser({email: email, uid: uid});
-            artist === true
-              ? navigation.navigate('Upload')
-              : navigation.navigate('Podcast');
-          });
-      })
-      .catch(error => {
-        Alert.alert('Registro incorrecto');
-        console.log('Register error =====>', error);
+    if (username && email && password) {
+      firebase.auth
+        .createUserWithEmailAndPassword(email, password)
+        .then(cred => {
+          return firebase.db
+            .collection('users')
+            .doc(cred.user.uid)
+            .set({
+              email: email,
+              username: username,
+              score: 0,
+              isArtist: artist,
+            })
+            .then(cred => {
+              Alert.alert('Usuario registrado exitosamente');
+              const {email, uid} = firebase.auth.currentUser;
+              setUser({email: email, uid: uid});
+              artist === true
+                ? navigation.navigate('Upload')
+                : navigation.navigate('Podcast');
+            });
+        })
+        .catch(error => {
+          Alert.alert('Registro incorrecto');
+          console.log('Register error =====>', error);
+        });
+      setInput({
+        email: '',
+        username: '',
+        password: '',
+        password2: '',
       });
-    setInput({
-      email: '',
-      username: '',
-      password: '',
-      password2: '',
-    });
+    } else {
+      Alert.alert('Por favor rellene los campos');
+    }
   };
 
   return (
@@ -134,7 +138,9 @@ const Register = ({navigation}) => {
           <View style={styles.button}>
             <TouchableOpacity
               style={styles.touch}
-              onPress={() => handlePrueba() /* navigation.navigate('Login') */}>
+              onPress={
+                () => handleRegister() /* navigation.navigate('Login') */
+              }>
               <Text style={styles.touchText}>Continuar</Text>
             </TouchableOpacity>
           </View>
@@ -216,8 +222,16 @@ const styles = StyleSheet.create({
   link: {
     textDecorationLine: 'underline',
   },
-  caja: {flex: 1, backgroundColor: '#EBF7FF', marginTop: 220},
-  cajaInputs: {flex: 1, marginLeft: 40, marginRight: 40},
+  caja: {
+    flex: 1,
+    backgroundColor: '#EBF7FF',
+    marginTop: 233,
+  },
+  cajaInputs: {
+    flex: 1,
+    marginLeft: 40,
+    marginRight: 40,
+  },
 });
 
 export default Register;
