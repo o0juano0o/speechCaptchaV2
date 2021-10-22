@@ -19,7 +19,7 @@ const image = require('../assets/graphy1.png');
 const logo = require('../assets/vcapp.png');
 const menu = require('../assets/menu.png');
 
-const INITIAL_INDEX = 0;
+const INITIAL_INDEX = 1;
 
 // RECOIL
 import {selectedPodcast} from '../recoil/selectedPodcast';
@@ -132,6 +132,7 @@ export default function App({navigation}) {
           renderItem={renderItem}
           onScrollEnd={handleCarouselScrollEnd}
           ref={carouselRef}
+          initialIndex={INITIAL_INDEX}
         />
       </View>
       {/* ---------------FOOTER---------------- */}
@@ -221,6 +222,8 @@ const styles = StyleSheet.create({
   lowerContainer: {},
   titleText: {
     marginTop: '10%',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   contentText: {},
 });

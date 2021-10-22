@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import DocumentPicker from 'react-native-document-picker';
@@ -28,7 +28,7 @@ const Upload = ({navigation}) => {
   const [podcasts, setPodcasts] = React.useState([]);
   const [user, setUser] = useRecoilState(userLogged);
   const [artist, setArtist] = useRecoilState(isArtist);
-
+  const [toggle, setToggle] = React.useState([]);
   useEffect(() => {
     const arr = [];
     if (user.isArtist) {
@@ -70,6 +70,19 @@ const Upload = ({navigation}) => {
       : navigation.navigate('BlueUser');
   };
 
+  const handleDownload = podcast => {
+    const name = podcast.tittle.slice(0, -4);
+    var path = `${RNFS.ExternalDirectoryPath}/${name}.txt`;
+    console.log(path);
+    RNFS.writeFile(path, podcast.transcription, 'utf8')
+      .then(success => {
+        Alert.alert('Transcripción guardada');
+      })
+      .catch(err => {
+        Alert.alert('Algo salió mal, inténtalo mas tarde');
+      });
+  };
+
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.logo} />
@@ -79,16 +92,25 @@ const Upload = ({navigation}) => {
       </TouchableOpacity>
       {/* -------------------------------------------- */}
       <Text style={styles.title}>Mis podcasts</Text>
-      {podcasts?.map(podcast => {
-        return (
-          <View style={styles.podcast} key={podcast.url}>
-            <Text style={styles.text}>{podcast.tittle}</Text>
-            <Text style={styles.text1}>Voicers: {podcast.voicers}</Text>
-            <Image source={descarga} style={styles.descarga} />
-          </View>
-        );
-      })}
-
+      <View style={styles.cajaMadre}>
+        <KeyboardAwareScrollView style={{flex: 1}}>
+          {podcasts?.map(podcast => {
+            return (
+              <View style={styles.podcast} key={podcast.url}>
+                <Text style={styles.text}>{podcast.tittle}</Text>
+                <Text style={styles.text1}>Voicers: {podcast.voicers}</Text>
+                <TouchableOpacity
+                  style={styles.descarga}
+                  onPress={() => {
+                    handleDownload(podcast);
+                  }}>
+                  <Image source={descarga} />
+                </TouchableOpacity>
+              </View>
+            );
+          })}
+        </KeyboardAwareScrollView>
+      </View>
       <TouchableOpacity
         style={styles.button}
         onPress={async () => {
@@ -122,14 +144,21 @@ const Upload = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  cajaMadre: {
+    marginTop: '150%',
+    width: '90%',
+    height: '40%',
+  },
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
   },
   title: {
+    position: 'absolute',
     fontSize: 30,
-    top: '10%',
+    top: '15%',
     color: '#5b5d68',
     fontWeight: 'bold',
     marginBottom: '25%',
@@ -145,7 +174,7 @@ const styles = StyleSheet.create({
   button: {
     position: 'relative',
     display: 'flex',
-    top: '3%',
+    top: '4%',
     width: '50%',
     height: '6%',
     justifyContent: 'center',
@@ -156,13 +185,13 @@ const styles = StyleSheet.create({
   image: {
     position: 'relative',
     left: '10%',
-    top: '2%',
+    marginTop: '100%',
   },
   logo: {
     position: 'absolute',
     width: '15%',
     height: '3.2%',
-    left: '2%',
+    left: '4%',
     top: '2%',
   },
   menu: {
@@ -175,9 +204,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#E1DBDA',
     borderRadius: 15,
-    height: '12%',
+    height: '15%',
     width: '85%',
-    margin: '3%',
+    margin: '8%',
   },
   descarga: {
     position: 'absolute',
